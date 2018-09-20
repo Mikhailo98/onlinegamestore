@@ -1,4 +1,4 @@
-﻿namespace BusinessLogicLayer.Interfaces
+﻿namespace BusinessLogicLayer
 {
     public class PlatformTypeDto
     {
