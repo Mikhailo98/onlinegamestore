@@ -17,5 +17,12 @@ namespace Domain
 
         public virtual ICollection<Genre> SubGenres { get; set; }
         public virtual ICollection<GenreGame> GenreGames { get; set; }
+
+        public Genre()
+        {
+            SubGenres = new List<Genre>();
+            GenreGames = new List<GenreGame>();
+        }
+
     }
 }

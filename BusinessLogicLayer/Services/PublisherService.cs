@@ -30,7 +30,7 @@ namespace BusinessLogicLayer.Services
 
         public async Task CreatePublisher(PublisherDto newPublisher)
         {
-            var publisher = unitOfWork.PublisherRepository.Get(p => p.Name == newPublisher.Name);
+            var publisher = unitOfWork.PublisherRepository.GetSingle(p => p.Name == newPublisher.Name);
             if (publisher != null)
             {
                 throw new ArgumentNullException("Publisher with such Name already exists");

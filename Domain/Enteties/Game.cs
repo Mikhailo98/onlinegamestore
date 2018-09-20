@@ -19,5 +19,12 @@ namespace Domain
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<GenreGame> GenreGames { get; set; }
         public virtual ICollection<GamePlatformType> GamePlatformTypes { get; set; }
+
+        public Game()
+        {
+            Comments = new List<Comment>();
+            GenreGames = new List<GenreGame>();
+            GamePlatformTypes = new List<GamePlatformType>();
+        }
     }
 }

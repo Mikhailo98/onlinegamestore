@@ -12,9 +12,14 @@ namespace BusinessLogicLayer.Configuration
 
         public AutoMapperConfig()
         {
+            //source -> destination
+
             CreateMap<GameDto, Game>();
 
             CreateMap<Game, GameDto>();
+
+            CreateMap<CreateGameDto, Game>()
+                .ForMember(p => p.GenreGames, opt => opt.Ignore());
 
         }
     }

@@ -43,7 +43,9 @@ _ReSharper*/
 # Office Temp Files
 ~$*
 
-.vs/Domain/
+.vs/
+
+.vs/config/
 
 *.suo
 

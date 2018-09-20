@@ -6,7 +6,6 @@ namespace Domain
 {
     public class GamePlatformType
     {
-
         public int PlatformTypeId { get; set; }
         public virtual PlatformType PlatformType { get; set; }
 

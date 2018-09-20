@@ -4,7 +4,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Data;
-
+using System.Collections.Generic;
 
 namespace DAL
 {
@@ -18,11 +18,49 @@ namespace DAL
         //maybe should deleted 
         public ApplicationContext() : base()
         {
-            Database.EnsureCreated();
+        }
+
+
+        static ApplicationContext()
+        {
+            Initialize();
+        }
+
+        public static void Initialize()
+        {
+            using (var ctx = new ApplicationContext())
+            {
+                ctx.Database.EnsureDeleted();
+                ctx.Database.EnsureCreated();
+
+                var publisher1 = new Publisher { Name = "Blizzard" };
+
+                var game1 = new Game { Name = "StarCraft 2", Description = "An awesome game", Publisher = publisher1 };
+
+                var genre1 = new Genre { Name = "Strategy" };
+                var genre2 = new Genre { Name = "RTS" };
+
+                var gameGenre1 = new GenreGame() { Game = game1, Genre = genre1 };
+                var gameGenre2 = new GenreGame() { Game = game1, Genre = genre2 };
+
+                game1.GenreGames = new List<GenreGame> { gameGenre1, gameGenre2 };
+
+                ctx.Publishers.Add(publisher1);
+
+                ctx.Games.Add(game1);
+
+                ctx.Genres.Add(genre1);
+                ctx.Genres.Add(genre2);
 
 
 
+                ctx.PlatformTypes.Add(new PlatformType() { Type = "desktop" });
+                ctx.PlatformTypes.Add(new PlatformType() { Type = "mobile" });
+                ctx.PlatformTypes.Add(new PlatformType() { Type = "console" });
+                ctx.PlatformTypes.Add(new PlatformType() { Type = "browser" });
 
+                ctx.SaveChanges();
+            }
         }
 
         public DbSet<Comment> Comments { get; set; }
@@ -52,9 +90,9 @@ namespace DAL
              .IsUnique();
 
             //platformtype
-             //   modelBuilder.Entity<PlatformType>()
-             //.HasIndex(p => p.Name)
-             //.IsUnique();
+            modelBuilder.Entity<PlatformType>()
+             .HasIndex(p => p.Type)
+             .IsUnique();
 
 
             //game-publisher

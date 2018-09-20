@@ -12,6 +12,6 @@ namespace BusinessLogicLayer.Dtos
         public string Description { get; set; }
 
         public int? PublisherId { get; set; }
-       
+        
     }
 }

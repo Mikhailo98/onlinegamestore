@@ -20,7 +20,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateGame([FromBody]PublisherCreateModel publisher)
+        public async Task<IActionResult> CreatePublisherAsync([FromBody]PublisherCreateModel publisher)
         {
 
             if (!ModelState.IsValid)
@@ -38,7 +38,7 @@ namespace WebApi.Controllers
                 return BadRequest(ex.Message);
             }
 
-            return Ok("Game was added");
+            return Ok("Publisher was added");
         }
 
     }

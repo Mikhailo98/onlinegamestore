@@ -31,11 +31,13 @@ namespace WebApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            GameDto g = new GameDto()
+            CreateGameDto g = new CreateGameDto()
             {
                 Name = game.Name,
                 Description = game.Description,
-                PublisherId = game.PublisherId
+                PublisherId = game.PublisherId,
+                Genres = game.Genres,
+                Platforms = game.Platforms,
             };
 
 
@@ -58,7 +60,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public HttpResponseMessage GetAll()
+        public async Task<IActionResult> GetAll()
         {
 
             return null;
@@ -82,10 +84,26 @@ namespace WebApi.Controllers
 
         }
 
-        [HttpDelete("{id}")]
-        public HttpResponseMessage DeleteById(int id)
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteById(int id)
         {
-            return null;
+
+            if (id <= 0)
+            {
+                return BadRequest("Invalid image id");
+            }
+
+            try
+            {
+                await gameService.DeleteGame(id);
+                return Ok("Game was successfully deleted ");
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+
+            }
         }
 
 

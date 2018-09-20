@@ -21,16 +21,6 @@ namespace WebApi
 {
 
 
-    //public class DomainProfile : Profile
-    //{
-    //    public DomainProfile()
-    //    {
-    //        Mapper.Initialize(cfg =>
-    //        {
-    //            cfg.AddProfile(new AutoMapperConfig());
-    //        });
-    //    }
-    //}
 
     public class Startup
     {

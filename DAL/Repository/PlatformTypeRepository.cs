@@ -6,11 +6,8 @@ namespace DAL
 {
     internal class PlatformTypeRepository : Repository<PlatformType, int>, IPlatformTypeRepository
     {
-        private ApplicationContext context;
-
         public PlatformTypeRepository(ApplicationContext context) : base(context)
         {
-            this.context = context;
         }
     }
 }

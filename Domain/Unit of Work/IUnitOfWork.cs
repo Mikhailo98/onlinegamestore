@@ -13,6 +13,8 @@ namespace Domain
         IGenreRepository GenreRepository { get; }
         IPublisherRepository PublisherRepository { get; }
         IPlatformTypeRepository PlatformTypeRepository { get; }
+        IGameGenreRepository GameGenreRepository { get;  }
+        IGamePlatformTypeRepository GamePlatformTypeRepository { get; }
 
         void Commit();
         Task CommitAsync();

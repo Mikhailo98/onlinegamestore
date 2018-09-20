@@ -8,7 +8,7 @@ namespace BusinessLogicLayer.Interfaces
 {
     public interface IGameService
     {
-        Task AddGame(GameDto game);
+        Task AddGame(CreateGameDto game);
         Task DeleteGame(int id);
         Task EditGame(int id, GameDto editedGame);
         Task<GameDto> GetInfo(int id);

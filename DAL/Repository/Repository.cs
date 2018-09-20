@@ -11,8 +11,8 @@ namespace DAL.Repository
     internal class Repository<T, K> : IRepository<T, K> where T : class
     {
 
-        private readonly ApplicationContext context;
-        private readonly DbSet<T> dbSet;
+        internal readonly ApplicationContext context;
+        internal readonly DbSet<T> dbSet;
 
         public Repository(ApplicationContext context)
         {

@@ -8,16 +8,10 @@ namespace Domain
     {
         public int Id { get; set; }
 
-        public virtual Platform Type { get; set; }
+        public string Type { get; set; }
 
         public virtual ICollection<GamePlatformType> GamePlatformtypes { get; set; }
     }
 
-    public enum Platform
-    {
-        desktop,
-        mobile,
-        browser,
-        console
-    }
+
 }

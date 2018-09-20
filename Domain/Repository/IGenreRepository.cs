@@ -6,5 +6,7 @@ namespace Domain.Repository
 {
     public interface IGenreRepository : IRepository<Genre, int>
     {
+        Genre GetGenreFullInfo(int id);
+
     }
 }

@@ -12,13 +12,17 @@ namespace WebApi.Models
         [Required]
         public string Name { get; set; }
 
+        [MaxLength(400)]
         public string Description { get; set; }
 
         [Required]
         public int PublisherId { get; set; }
-        
+
         [Required]
-        public List<string> Genres { get; set; }
+        public List<int> Genres { get; set; }
+
+        [Required]
+        public List<int> Platforms { get; set; }
 
     }
 }

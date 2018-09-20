@@ -5,6 +5,7 @@ using System.Text;
 using Domain.Repository;
 using DAL.Repository;
 using System.Threading.Tasks;
+using DataAccessLayer.Repository;
 
 namespace DAL
 {
@@ -18,6 +19,9 @@ namespace DAL
         private GenreRepository genreRepository;
         private PublisherRepository publisherRepository;
         private PlatformTypeRepository platformTypeRepository;
+        private GameGenreRepository gameGenreRepository;
+        private GamePlatformTypeRepository gamePlatformTypeRepository;
+
 
         public UnitOfWork()
         {
@@ -28,6 +32,24 @@ namespace DAL
         public UnitOfWork(ApplicationContext context)
         {
             this.context = context;
+        }
+
+        public IGamePlatformTypeRepository GamePlatformTypeRepository
+        {
+            get
+            {
+                return gamePlatformTypeRepository = gamePlatformTypeRepository ?? new GamePlatformTypeRepository(context);
+            }
+        }
+
+
+
+        public IGameGenreRepository GameGenreRepository
+        {
+            get
+            {
+                return gameGenreRepository = gameGenreRepository ?? new GameGenreRepository(context);
+            }
         }
 
         public IGameRepository GameRepository
