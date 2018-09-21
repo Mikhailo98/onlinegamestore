@@ -22,24 +22,34 @@ namespace WebApi.Controllers
         }
 
 
-        // GET: api/Genre
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IActionResult> Get()
         {
-            return new string[] { "value1", "value2" };
+            return Ok(await genreService.GetAll());
+
         }
 
-        // GET: api/Genre/5
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            await genreService.GetInfo(id);
 
+            if (id <= 0)
+            {
+                return BadRequest("Invalid Genre Id");
+            }
 
-            return Ok();
+            try
+            {
+                var genre = await genreService.GetInfo(id);
+                return Ok(genre);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
 
-        // POST: api/Genre
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]CreateGanreModel value)
         {
@@ -67,13 +77,8 @@ namespace WebApi.Controllers
 
         }
 
-        // PUT: api/Genre/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
+     
 
-        // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -84,9 +89,9 @@ namespace WebApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);                
+                return BadRequest(ex.Message);
             }
-            
+
         }
     }
 }

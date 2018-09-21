@@ -1,4 +1,6 @@
 ﻿using BusinessLogicLayer.Dtos;
+using BusinessLogicLayer.Models;
+using BusinessLogicLayer.Models.Dtos.GameDto;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,9 +12,8 @@ namespace BusinessLogicLayer.Interfaces
     {
         Task AddGame(CreateGameDto game);
         Task DeleteGame(int id);
-        Task EditGame(int id, GameDto editedGame);
-        Task<GameDto> GetInfo(int id);
-
-
+        Task EditGame( EditGameDto editedGame);
+        Task<DetailedGameModel> GetInfo(int id);
+        Task<List<GameDto>> GetAll();
     }
 }

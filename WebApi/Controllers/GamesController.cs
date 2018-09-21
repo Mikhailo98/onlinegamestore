@@ -31,7 +31,7 @@ namespace WebApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            CreateGameDto g = new CreateGameDto()
+            CreateGameDto createdGame = new CreateGameDto()
             {
                 Name = game.Name,
                 Description = game.Description,
@@ -43,7 +43,7 @@ namespace WebApi.Controllers
 
             try
             {
-                await gameService.AddGame(g);
+                await gameService.AddGame(createdGame);
             }
             catch (Exception ex)
             {
@@ -53,17 +53,20 @@ namespace WebApi.Controllers
             return Ok("Game was added");
         }
 
-        [HttpPut]
-        public async Task<IActionResult> EditGame([FromBody]EditGameModel game)
-        {
-            return null;
-        }
+
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-
-            return null;
+            try
+            {
+                List<GameDto> games = await gameService.GetAll();
+                return Ok(games);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
 
@@ -105,8 +108,6 @@ namespace WebApi.Controllers
 
             }
         }
-
-
 
     }
 }

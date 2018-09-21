@@ -23,18 +23,8 @@ namespace DAL
         private GamePlatformTypeRepository gamePlatformTypeRepository;
 
 
-        public UnitOfWork()
-        {
-            
-        }
 
-
-        public UnitOfWork(ApplicationContext context)
-        {
-            this.context = context;
-        }
-
-        public IGamePlatformTypeRepository GamePlatformTypeRepository
+        public IRepository<GamePlatformType> GamePlatformTypeRepository
         {
             get
             {
@@ -42,9 +32,7 @@ namespace DAL
             }
         }
 
-
-
-        public IGameGenreRepository GameGenreRepository
+        public IRepository<GenreGame> GameGenreRepository
         {
             get
             {
@@ -52,7 +40,7 @@ namespace DAL
             }
         }
 
-        public IGameRepository GameRepository
+        public IRepository<Game> GameRepository
         {
             get
             {
@@ -60,7 +48,7 @@ namespace DAL
             }
         }
 
-        public ICommentRepository CommentRepository
+        public IRepository<Comment> CommentRepository
         {
             get
             {
@@ -68,7 +56,7 @@ namespace DAL
             }
         }
 
-        public IGenreRepository GenreRepository
+        public IRepository<Genre> GenreRepository
         {
             get
             {
@@ -76,7 +64,7 @@ namespace DAL
             }
         }
 
-        public IPublisherRepository PublisherRepository
+        public IRepository<Publisher> PublisherRepository
         {
             get
             {
@@ -84,7 +72,7 @@ namespace DAL
             }
         }
 
-        public IPlatformTypeRepository PlatformTypeRepository
+        public IRepository<PlatformType> PlatformTypeRepository
         {
             get
             {

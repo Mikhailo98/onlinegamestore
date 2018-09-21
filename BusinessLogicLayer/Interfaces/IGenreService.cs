@@ -12,5 +12,6 @@ namespace BusinessLogicLayer.Interfaces
         Task DeleteGenre(int id);
         Task EditGenre(int id, GenreDto editedGenre);
         Task<GenreDto> GetInfo(int id);
+        Task<List<GenreDto>> GetAll();
     }
 }

@@ -8,6 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using BusinessLogicLayer.Dtos;
 using AutoMapper;
+using Domain.Repository;
+using BusinessLogicLayer.Models;
+using BusinessLogicLayer.Models.Dtos.GameDto;
 
 namespace BusinessLogicLayer.Services
 {
@@ -40,83 +43,101 @@ namespace BusinessLogicLayer.Services
                 }
 
 
-                var game = mapper.Map<Game>(gameDto);
+                var newGame = mapper.Map<Game>(gameDto);
 
-                CheckPlatforms(gameDto.Platforms, game);
-                CheckGenres(gameDto.Genres, game);
+                //#region New Check
 
+                //var platforms = unitOfWork
+                //                    .PlatformTypeRepository
+                //                    .Get(p => gameDto.Platforms.Contains(p.Id))
+                //                    .Select((pt) => new GamePlatformType()
+                //                    {
+                //                        Game = newGame,
+                //                        PlatformType = pt
+                //                    }).ToList();
 
+                //var genres = unitOfWork
+                //                    .GenreRepository
+                //                    .Get(p => gameDto.Genres.Contains(p.Id))
+                //                    .Select((gn) => new GenreGame()
+                //                    {
+                //                        Game = newGame,
+                //                        Genre = gn
 
-                ////checking for genres 
-                //foreach (var item in gameDto.Genres)
+                //                    }).ToList();
+
+                //if (platforms.Count != gameDto.Platforms.Count)
                 //{
-                //    var returnGenre = unitOfWork.GenreRepository.GetById(item);
-                //    if (returnGenre == null)
-                //    {
-                //        throw new ArgumentException($"Invalid genre id: {item}");
-                //    }
-
-                //    unitOfWork.GameGenreRepository.Create(new GenreGame() { Game = game, Genre = returnGenre });
+                //    throw new ArgumentException("Invalid platform Id");
                 //}
 
+                //if (genres.Count != gameDto.Genres.Count)
+                //{
+                //    throw new ArgumentException("Invalid genre Id");
+                //}
 
-                unitOfWork.GameRepository.Create(game);
+                //#endregion
+
+                //newGame.GamePlatformTypes = platforms;
+                //newGame.GenreGames = genres;
+
+
+                //    CheckPlatforms(gameDto.Platforms, newGame);
+                //  CheckGenres(gameDto.Genres, newGame);
+                unitOfWork.GameRepository.Create(newGame);
+
                 await unitOfWork.CommitAsync();
 
             }
         }
 
 
-        /// <summary>
-        /// Check for Genres
-        /// </summary>
-        /// <param name="platforms"></param>
-        /// <param name="game"></param>
-        /// <returns></returns>
-        private void CheckGenres(List<int> genres, Game game)
-        {
-            //checking for genres 
-            foreach (var item in genres)
-            {
-                var returnGenre = unitOfWork.GenreRepository.GetById(item);
-                if (returnGenre == null)
-                {
-                    throw new ArgumentException($"Invalid genre id: {item}");
-                }
-                unitOfWork.GameGenreRepository.Create(new GenreGame() { Game = game, Genre = returnGenre });
-            }
+        ///// <summary>
+        ///// Check for Genres
+        ///// </summary>
+        ///// <param name="platforms"></param>
+        ///// <param name="game"></param>
+        ///// <returns></returns>
+        //private void CheckGenres(List<int> genres, Game game)
+        //{
+        //    //checking for genres 
+        //    foreach (var item in genres)
+        //    {
+        //        var returnGenre = unitOfWork.GenreRepository.GetSingle(i => i.Id == item);
+        //        if (returnGenre == null)
+        //        {
+        //            throw new ArgumentException($"Invalid genre id: {item}");
+        //        }
+        //        unitOfWork.GameGenreRepository.Create(new GenreGame() { Game = game, Genre = returnGenre });
+        //    }
 
-        }
-
-
-        /// <summary>
-        /// Check for platforms
-        /// </summary>
-        /// <param name="platforms"></param>
-        /// <returns></returns>
-        private void CheckPlatforms(List<int> platforms, Game game)
-        {
-            foreach (var item in platforms)
-            {
-                var returnPlatform = unitOfWork.PlatformTypeRepository.GetById(item);
-                if (returnPlatform == null)
-                {
-                    throw new ArgumentException($"Invalid platformtype id: {item}");
-                }
-                unitOfWork.GamePlatformTypeRepository.Create(new GamePlatformType() { Game = game, PlatformType = returnPlatform });
-            }
-        }
+        //}
 
 
-
+        ///// <summary>
+        ///// Check for platforms
+        ///// </summary>
+        ///// <param name="platforms"></param>
+        ///// <returns></returns>
+        //private void CheckPlatforms(List<int> platforms, Game game)
+        //{
+        //    foreach (var item in platforms)
+        //    {
+        //        var returnPlatform = unitOfWork.PlatformTypeRepository.GetSingle(i => i.Id == item);
+        //        if (returnPlatform == null)
+        //        {
+        //            throw new ArgumentException($"Invalid platformtype id: {item}");
+        //        }
+        //        unitOfWork.GamePlatformTypeRepository.Create(new GamePlatformType() { Game = game, PlatformType = returnPlatform });
+        //    }
+        //}
 
 
         public async Task DeleteGame(int id)
         {
             using (unitOfWork)
             {
-                var gameEntity = unitOfWork.GameRepository
-                    .GetSingle(filter: g => g.Id == id);
+                var gameEntity = await unitOfWork.GameRepository.GetSingle(filter: g => g.Id == id);
                 if (gameEntity == null)
                 {
                     throw new ArgumentException("Invalid game id");
@@ -126,25 +147,63 @@ namespace BusinessLogicLayer.Services
             }
         }
 
-        public Task EditGame(int id, GameDto editedGame)
-        {
-            throw new NotImplementedException();
-        }
 
-        public async Task<GameDto> GetInfo(int id)
+        public async Task EditGame(EditGameDto editedGame)
         {
             using (unitOfWork)
             {
-                var gameEntity = unitOfWork.GameRepository
-                    .GetSingle(filter: g => g.Id == id, includeProperties: "Publisher,Comments,GenreGames,GamePlatformTypes");
+                var gameEntity = await unitOfWork.GameRepository
+                .GetSingle(filter: g => g.Id == editedGame.Id);
+
+                if (gameEntity == null)
+                {
+                    throw new ArgumentException("No such game found");
+                }
+
+                var game = mapper.Map<Game>(editedGame);
+
+                unitOfWork.GameRepository.Update(gameEntity);
+                await unitOfWork.CommitAsync();
+            }
+        }
+
+        public async Task<DetailedGameModel> GetInfo(int id)
+        {
+            using (unitOfWork)
+            {
+                var gameEntity = await unitOfWork.GameRepository
+                    .GetSingle(filter: g => g.Id == id);
 
                 if (gameEntity == null)
                 {
                     throw new ArgumentException("Invalid game id");
                 }
 
-                return mapper.Map<GameDto>(gameEntity);
+                return new DetailedGameModel()
+                {
+                    Game = mapper.Map<GameDto>(gameEntity),
+                    Comments = mapper.Map<List<CommentDto>>(gameEntity.Comments),
+                    Platforms = mapper.Map<List<PlatformDto>>(gameEntity.GamePlatformTypes.Select(p => new PlatformDto()
+                    {
+                        Id = p.PlatformTypeId,
+                        Type = p.PlatformType.Type
+                    }))
+                };
+            };
+        }
+
+
+        public async Task<List<GameDto>> GetAll()
+        {
+            using (unitOfWork)
+            {
+                var games = await unitOfWork.GameRepository.Get();
+
+
+                var gameDtos = mapper.Map<List<GameDto>>(games);
+                return gameDtos;
             }
+
         }
     }
 }

@@ -12,10 +12,10 @@ namespace DAL
     {
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
+           
         }
 
 
-        //maybe should deleted 
         public ApplicationContext() : base()
         {
         }
@@ -23,7 +23,7 @@ namespace DAL
 
         static ApplicationContext()
         {
-            Initialize();
+            //  Initialize();
         }
 
         public static void Initialize()
@@ -83,6 +83,7 @@ namespace DAL
                .HasIndex(p => p.Name)
                .IsUnique();
 
+           
 
             //genre
             modelBuilder.Entity<Genre>()
@@ -104,6 +105,7 @@ namespace DAL
             modelBuilder.Entity<Comment>()
                 .HasOne(p => p.Game)
                 .WithMany(b => b.Comments);
+
 
 
             //genre

@@ -8,13 +8,13 @@ namespace Domain
 {
     public interface IUnitOfWork : IDisposable
     {
-        IGameRepository GameRepository { get; }
-        ICommentRepository CommentRepository { get; }
-        IGenreRepository GenreRepository { get; }
-        IPublisherRepository PublisherRepository { get; }
-        IPlatformTypeRepository PlatformTypeRepository { get; }
-        IGameGenreRepository GameGenreRepository { get;  }
-        IGamePlatformTypeRepository GamePlatformTypeRepository { get; }
+        IRepository<Game> GameRepository { get; }
+        IRepository<Comment> CommentRepository { get; }
+        IRepository<Genre> GenreRepository { get; }
+        IRepository<Publisher> PublisherRepository { get; }
+        IRepository<PlatformType> PlatformTypeRepository { get; }
+        IRepository<GenreGame> GameGenreRepository { get;  }
+        IRepository<GamePlatformType> GamePlatformTypeRepository { get; }
 
         void Commit();
         Task CommitAsync();

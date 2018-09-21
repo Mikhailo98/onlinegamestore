@@ -28,6 +28,7 @@ namespace WebApi
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
@@ -44,7 +45,6 @@ namespace WebApi
             var container = builder.Build();
             return new AutofacServiceProvider(container);
 
-            // Register the Swagger generator, defining 1 or more Swagger documents
 
         }
 

@@ -5,10 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace DAL.Repository
 {
-    internal class Repository<T, K> : IRepository<T, K> where T : class
+    internal class Repository<T> : IRepository<T> where T : class
     {
 
         internal readonly ApplicationContext context;
@@ -85,8 +86,7 @@ namespace DAL.Repository
         }
 
 
-
-        public T GetById(K id)
+        public T GetById(int id)
         {
             return dbSet.Find(id);
         }
@@ -95,6 +95,21 @@ namespace DAL.Repository
         {
             dbSet.Attach(entity);
             context.Entry(entity).State = EntityState.Modified;
+        }
+
+        Task<List<T>> IRepository<T>.Get()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<T> GetSingle(Expression<Func<T, bool>> filter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<T>> Get(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null)
+        {
+            throw new NotImplementedException();
         }
     }
 }

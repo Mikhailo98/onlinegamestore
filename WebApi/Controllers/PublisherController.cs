@@ -28,7 +28,6 @@ namespace WebApi.Controllers
                 return BadRequest(ModelState);
             }
 
-
             try
             {
                 await gameService.CreatePublisher(new BusinessLogicLayer.Dtos.PublisherDto() { Name = publisher.Name });
@@ -40,6 +39,5 @@ namespace WebApi.Controllers
 
             return Ok("Publisher was added");
         }
-
     }
 }

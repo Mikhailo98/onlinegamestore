@@ -11,21 +11,17 @@ namespace BusinessLogicLayer.Services
 {
     public class PublisherService : IPublisherService
     {
-        private IUnitOfWork unitOfWork;
-        private IMapper mapper;
-        
+        private readonly IUnitOfWork unitOfWork;
+        private readonly IMapper mapper;
+
 
         public PublisherService(IUnitOfWork unit, IMapper mapper)
         {
             unitOfWork = unit;
-            this.mapper = mapper; 
+            this.mapper = mapper;
         }
 
 
-        public PublisherService()
-        {
-
-        }
 
 
         public async Task CreatePublisher(PublisherDto newPublisher)
