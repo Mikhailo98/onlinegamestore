@@ -38,12 +38,12 @@ namespace DAL
             dbSet.Remove(entity);
         }
 
-        public async Task<List<Game>> Get()
+        public async Task<List<Game>> GetAsync()
         {
             return await dbSet.ToListAsync();
         }
 
-        public async Task<IEnumerable<Game>> Get(Expression<Func<Game, bool>> filter = null, Func<IQueryable<Game>, IOrderedQueryable<Game>> orderBy = null)
+        public async Task<IEnumerable<Game>> GetAsync(Expression<Func<Game, bool>> filter = null, Func<IQueryable<Game>, IOrderedQueryable<Game>> orderBy = null)
         {
             IQueryable<Game> query = dbSet;
 
@@ -73,13 +73,13 @@ namespace DAL
             }
         }
 
-        public async Task<Game> GetSingle(Expression<Func<Game, bool>> filter)
+        public async Task<Game> GetSingleAsync(Expression<Func<Game, bool>> filter)
         {
             IQueryable<Game> query = dbSet;
 
             return await query
                 .Include(p => p.GenreGames)
-                    .ThenInclude(p => p.Genre)
+                       .ThenInclude(p => p.Genre)
                     .Include(p => p.Publisher)
                     .Include(p => p.GamePlatformTypes)
                     .ThenInclude(p => p.PlatformType)

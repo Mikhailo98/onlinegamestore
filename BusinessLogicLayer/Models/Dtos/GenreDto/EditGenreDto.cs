@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BusinessLogicLayer.Dtos
+namespace BusinessLogicLayer.Models.Dtos.GenreDto
 {
-    public class PublisherDto
+    public class EditGenreDto
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<GameDto> Games { get; set; }
-
+        public int? HeadGenreId { get; set; }
     }
 }

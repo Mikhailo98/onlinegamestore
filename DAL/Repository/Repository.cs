@@ -97,17 +97,13 @@ namespace DAL.Repository
             context.Entry(entity).State = EntityState.Modified;
         }
 
-        Task<List<T>> IRepository<T>.Get()
+
+        public Task<T> GetSingleAsync(Expression<Func<T, bool>> filter)
         {
             throw new NotImplementedException();
         }
 
-        public Task<T> GetSingle(Expression<Func<T, bool>> filter)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<T>> Get(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null)
+        public Task<IEnumerable<T>> GetAsync(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null)
         {
             throw new NotImplementedException();
         }

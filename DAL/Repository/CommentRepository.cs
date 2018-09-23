@@ -37,12 +37,12 @@ namespace DAL.Repository
             dbSet.Remove(entity);
         }
 
-        public async Task<List<Comment>> Get()
+        public async Task<List<Comment>> GetAsync()
         {
             return await dbSet.ToListAsync();
         }
 
-        public async Task<IEnumerable<Comment>> Get(Expression<Func<Comment, bool>> filter = null, Func<IQueryable<Comment>, IOrderedQueryable<Comment>> orderBy = null)
+        public async Task<IEnumerable<Comment>> GetAsync(Expression<Func<Comment, bool>> filter = null, Func<IQueryable<Comment>, IOrderedQueryable<Comment>> orderBy = null)
         {
             IQueryable<Comment> query = dbSet;
 
@@ -67,7 +67,7 @@ namespace DAL.Repository
             }
         }
 
-        public async Task<Comment> GetSingle(Expression<Func<Comment, bool>> filter)
+        public async Task<Comment> GetSingleAsync(Expression<Func<Comment, bool>> filter)
         {
             IQueryable<Comment> query = dbSet;
 

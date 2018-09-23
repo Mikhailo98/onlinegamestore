@@ -1,4 +1,5 @@
 ﻿using BusinessLogicLayer.Dtos;
+using BusinessLogicLayer.Models.Dtos.GenreDto;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,8 +11,9 @@ namespace BusinessLogicLayer.Interfaces
     {
         Task AddGenre(GenreCreateDto genre);
         Task DeleteGenre(int id);
-        Task EditGenre(int id, GenreDto editedGenre);
+        Task EditGenre(EditGenreDto editedGenre);
         Task<GenreDto> GetInfo(int id);
         Task<List<GenreDto>> GetAll();
+        Task<List<GameDto>> GetGamesOfGenre(int id);
     }
 }

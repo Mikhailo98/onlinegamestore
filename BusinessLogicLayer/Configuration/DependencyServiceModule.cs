@@ -1,4 +1,6 @@
 ﻿using Autofac;
+using AutoMapper;
+using BusinessLogicLayer.Interfaces;
 
 namespace BusinessLogicLayer.Configuration
 {
@@ -8,7 +10,10 @@ namespace BusinessLogicLayer.Configuration
         {
 
             builder.RegisterAssemblyTypes(this.GetType().Assembly).AsImplementedInterfaces();
+            
             builder.RegisterModule(new DataAccessLayer.DependencyServiceModule());
+
+
         }
 
     }

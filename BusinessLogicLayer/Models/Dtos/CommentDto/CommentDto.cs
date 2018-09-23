@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BusinessLogicLayer.Dtos
 {
-   public class CommentDto
+    public class CommentDto
     {
         public int Id { get; set; }
 
@@ -12,7 +12,6 @@ namespace BusinessLogicLayer.Dtos
         public string Body { get; set; }
 
         public int? GameId { get; set; }
-        
-        public int? AnswerId { get; set; }        
+        public int? AnswerId { get; set; }
     }
 }

@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using BusinessLogicLayer.Dtos;
 using BusinessLogicLayer.Interfaces;
+using BusinessLogicLayer.Models.Dtos.GenreDto;
 using Domain;
 using Domain.Repository;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,33 +23,30 @@ namespace BusinessLogicLayer.Services
             this.mapper = mapper;
         }
 
+
+
+
         public async Task AddGenre(GenreCreateDto genre)
         {
             using (unitOfWork)
             {
-                if (unitOfWork.GenreRepository.GetSingle(g => g.Name == genre.Name) != null)
+                if (await unitOfWork.GenreRepository.GetSingleAsync(g => g.Name == genre.Name) != null)
                 {
                     throw new ArgumentException("Such Genre already exists");
                 }
-
 
                 Genre newGenre = new Genre() { Name = genre.Name };
 
                 if (genre.HeadGenreId != null)
                 {
-                    Genre headGenre = await unitOfWork.GenreRepository.GetSingle(g => g.Id == genre.HeadGenreId);
-
+                    Genre headGenre = await unitOfWork
+                        .GenreRepository.GetSingleAsync(g => g.Id == genre.HeadGenreId);
                     if (headGenre == null)
                     {
                         throw new ArgumentException("Invalid Head Genre Id");
                     }
-
                     newGenre.HeadGenre = headGenre;
-
-                    headGenre.SubGenres.Add(newGenre);
-                    unitOfWork.GenreRepository.Update(headGenre);
                 }
-
 
                 unitOfWork.GenreRepository.Create(newGenre);
                 await unitOfWork.CommitAsync();
@@ -61,7 +60,7 @@ namespace BusinessLogicLayer.Services
         {
             using (unitOfWork)
             {
-                var genreEntity = await unitOfWork.GenreRepository.GetSingle(i => i.Id == id);
+                var genreEntity = await unitOfWork.GenreRepository.GetSingleAsync(i => i.Id == id);
                 if (genreEntity == null)
                 {
                     throw new ArgumentException("Invalid Genre Id");
@@ -74,9 +73,40 @@ namespace BusinessLogicLayer.Services
 
         }
 
-        public Task EditGenre(int id, GenreDto editedGenre)
+        public async Task EditGenre(EditGenreDto editedGenre)
         {
-            throw new NotImplementedException();
+            using (unitOfWork)
+            {
+                var genreEntity = await unitOfWork.GenreRepository.GetSingleAsync(i => i.Id == editedGenre.Id);
+                if (genreEntity == null)
+                {
+                    throw new ArgumentException("Invalid Genre Id");
+                }
+
+
+                GenreDto mapped = mapper.Map<GenreDto>(genreEntity);
+
+                mapped.Name = editedGenre.Name;
+                mapped.HeadGenreId = editedGenre.HeadGenreId;
+
+                if (mapped.SubGenres.Any(p => p.HeadGenreId == mapped.Id))
+                {
+                    var subgenreEntity = await unitOfWork.GenreRepository.GetSingleAsync(i => i.HeadGenreId == mapped.Id);
+
+                    GenreDto submapped = mapper.Map<GenreDto>(subgenreEntity);
+                    submapped.HeadGenreId = null;
+
+                    subgenreEntity = mapper.Map(submapped, subgenreEntity);
+                    unitOfWork.GenreRepository.Update(subgenreEntity);
+
+                }
+
+                genreEntity = mapper.Map(mapped, genreEntity);
+
+                unitOfWork.GenreRepository.Update(genreEntity);
+
+                await unitOfWork.CommitAsync();
+            }
         }
 
 
@@ -85,7 +115,7 @@ namespace BusinessLogicLayer.Services
         {
             using (unitOfWork)
             {
-                var genreEntity = await unitOfWork.GenreRepository.Get();
+                var genreEntity = await unitOfWork.GenreRepository.GetAsync();
                 var genres = mapper.Map<List<GenreDto>>(genreEntity);
                 return genres;
             }
@@ -95,7 +125,7 @@ namespace BusinessLogicLayer.Services
         {
             using (unitOfWork)
             {
-                var genreEntity = await unitOfWork.GenreRepository.GetSingle(i => i.Id == id);
+                var genreEntity = await unitOfWork.GenreRepository.GetSingleAsync(i => i.Id == id);
                 if (genreEntity == null)
                 {
                     throw new ArgumentException("Invalid Genre Id");
@@ -104,6 +134,23 @@ namespace BusinessLogicLayer.Services
                 var genreDto = mapper.Map<GenreDto>(genreEntity);
 
                 return genreDto;
+            }
+
+        }
+
+        public async Task<List<GameDto>> GetGamesOfGenre(int id)
+        {
+
+            using (unitOfWork)
+            {
+                var genreEntity = await unitOfWork.GenreRepository.GetSingleAsync(p => p.Id == id);
+                if (genreEntity == null)
+                {
+                    throw new ArgumentException("Invalid Genre Id");
+                }
+
+                var games = mapper.Map<List<GameDto>>(genreEntity.GenreGames);
+                return games;
             }
 
         }

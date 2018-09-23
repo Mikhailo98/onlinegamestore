@@ -8,9 +8,6 @@ namespace BusinessLogicLayer.Interfaces
 {
     public interface ICommentService
     {
-        Task AddComment(CreateCommentDto comment);
-        Task DeleteComment(int id);
-        Task EditComment(int id, CommentDto editedComment);
-        Task<CommentDto> GetInfo(int id);
+        Task AddComment(CreateAnswerCommentDto comment);
     }
 }

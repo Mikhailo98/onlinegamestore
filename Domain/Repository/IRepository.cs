@@ -9,15 +9,15 @@ namespace Domain.Repository
 {
     public interface IRepository<T>
     {
-        Task<List<T>> Get();
 
         void Create(T entity);
         void Update(T entity);
         void Delete(T entity);
 
-        Task<T> GetSingle(Expression<Func<T, bool>> filter);
+        Task<T> GetSingleAsync(Expression<Func<T, bool>> filter);
 
-        Task<IEnumerable<T>> Get(
+       // Task<List<T>> GetAsync();
+        Task<IEnumerable<T>> GetAsync(
           Expression<Func<T, bool>> filter = null,
           Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null);
 

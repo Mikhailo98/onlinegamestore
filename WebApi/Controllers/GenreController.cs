@@ -2,32 +2,59 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using BusinessLogicLayer.Dtos;
 using BusinessLogicLayer.Interfaces;
+using BusinessLogicLayer.Models.Dtos.GenreDto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
 
 namespace WebApi.Controllers
 {
-    [Route("api/genre")]
+    [Route("api/genres")]
     public class GenreController : Controller
     {
 
         private readonly IGenreService genreService;
+        private readonly IMapper mapper;
 
-        public GenreController(IGenreService genreService)
+        public GenreController(IGenreService genreService, IMapper mapper)
         {
             this.genreService = genreService;
+            this.mapper = mapper;
         }
 
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            return Ok(await genreService.GetAll());
+            try
+            {
+                return Ok(await genreService.GetAll());
 
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
+
+        [HttpGet("{id}/games")]
+        public async Task<IActionResult> GetAllCommentsbyGameKey(int id)
+        {
+            try
+            {
+                List<GameDto> commentDtos = await genreService.GetGamesOfGenre(id);
+                return Ok(commentDtos);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
@@ -48,6 +75,29 @@ namespace WebApi.Controllers
                 return BadRequest(ex.Message);
             }
 
+        }
+
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, [FromBody]EditGenreModel value)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+
+            }
+
+            EditGenreDto genreDto = new EditGenreDto()
+            {
+                Id = value.Id,
+                HeadGenreId = value.HeadGenreId,
+                Name = value.Name
+            };
+
+            await genreService.EditGenre(genreDto);
+
+
+            return Ok();
         }
 
         [HttpPost]
@@ -77,7 +127,7 @@ namespace WebApi.Controllers
 
         }
 
-     
+
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)

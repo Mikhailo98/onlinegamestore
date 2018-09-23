@@ -37,12 +37,12 @@ namespace DAL
             dbSet.Remove(entity);
         }
 
-        public async Task<List<PlatformType>> Get()
+        public async Task<List<PlatformType>> GetAsync()
         {
             return await dbSet.ToListAsync();
         }
 
-        public async Task<IEnumerable<PlatformType>> Get(Expression<Func<PlatformType, bool>> filter = null, Func<IQueryable<PlatformType>, IOrderedQueryable<PlatformType>> orderBy = null)
+        public async Task<IEnumerable<PlatformType>> GetAsync(Expression<Func<PlatformType, bool>> filter = null, Func<IQueryable<PlatformType>, IOrderedQueryable<PlatformType>> orderBy = null)
         {
             IQueryable<PlatformType> query = dbSet;
 
@@ -65,7 +65,7 @@ namespace DAL
             }
         }
 
-        public async Task<PlatformType> GetSingle(Expression<Func<PlatformType, bool>> filter)
+        public async Task<PlatformType> GetSingleAsync(Expression<Func<PlatformType, bool>> filter)
         {
             IQueryable<PlatformType> query = dbSet;
 

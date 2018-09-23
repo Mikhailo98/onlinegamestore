@@ -1,5 +1,6 @@
 ﻿using BusinessLogicLayer.Dtos;
 using BusinessLogicLayer.Models;
+using BusinessLogicLayer.Models.Dtos.CommentDto;
 using BusinessLogicLayer.Models.Dtos.GameDto;
 using System;
 using System.Collections.Generic;
@@ -12,8 +13,12 @@ namespace BusinessLogicLayer.Interfaces
     {
         Task AddGame(CreateGameDto game);
         Task DeleteGame(int id);
-        Task EditGame( EditGameDto editedGame);
-        Task<DetailedGameModel> GetInfo(int id);
+        Task EditGame(EditGameDto editedGame);
+        Task<GameDto> GetInfo(int id);
         Task<List<GameDto>> GetAll();
+        Task<List<CommentDto>> GetAllComments(int id);
+        Task<List<GenreDto>> GetGenres(int id);
+        Task CommentGame(CreateCommentDto comment);
+Task<string> GetGameLocalPath(int id);
     }
 }

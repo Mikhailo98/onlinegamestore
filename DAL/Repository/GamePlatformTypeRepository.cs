@@ -2,6 +2,7 @@
 using DAL.Repository;
 using Domain;
 using Domain.Repository;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,14 @@ namespace DataAccessLayer.Repository
 {
     class GamePlatformTypeRepository : IRepository<GamePlatformType>
     {
+        private readonly ApplicationContext context;
+        private readonly DbSet<GamePlatformType> dbSet;
+
 
         public GamePlatformTypeRepository(ApplicationContext context)
         {
-
+            this.context = context;
+            dbSet = context.Set<GamePlatformType>();
         }
 
         public Task Create(GamePlatformType entity)
@@ -29,17 +34,17 @@ namespace DataAccessLayer.Repository
             throw new NotImplementedException();
         }
 
-        public Task<List<GamePlatformType>> Get()
+        public Task<List<GamePlatformType>> GetAsync()
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<GamePlatformType>> Get(Expression<Func<GamePlatformType, bool>> filter = null, Func<IQueryable<GamePlatformType>, IOrderedQueryable<GamePlatformType>> orderBy = null)
+        public Task<IEnumerable<GamePlatformType>> GetAsync(Expression<Func<GamePlatformType, bool>> filter = null, Func<IQueryable<GamePlatformType>, IOrderedQueryable<GamePlatformType>> orderBy = null)
         {
             throw new NotImplementedException();
         }
 
-        public Task<GamePlatformType> GetSingle(Expression<Func<GamePlatformType, bool>> filter)
+        public Task<GamePlatformType> GetSingleAsync(Expression<Func<GamePlatformType, bool>> filter)
         {
             throw new NotImplementedException();
         }
@@ -51,12 +56,16 @@ namespace DataAccessLayer.Repository
 
         void IRepository<GamePlatformType>.Create(GamePlatformType entity)
         {
-            throw new NotImplementedException();
+            dbSet.Add(entity);
         }
 
         void IRepository<GamePlatformType>.Delete(GamePlatformType entity)
         {
-            throw new NotImplementedException();
+            if (context.Entry(entity).State == EntityState.Detached)
+            {
+                dbSet.Attach(entity);
+            }
+            dbSet.Remove(entity);
         }
 
         void IRepository<GamePlatformType>.Update(GamePlatformType entity)

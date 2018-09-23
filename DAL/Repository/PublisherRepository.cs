@@ -24,7 +24,7 @@ namespace DAL
 
         }
 
-        public async Task<List<Publisher>> Get()
+        public async Task<List<Publisher>> GetAsync()
         {
             return await dbSet.ToListAsync();
         }
@@ -49,24 +49,28 @@ namespace DAL
             dbSet.Remove(entity);
         }
 
-        public async Task<Publisher> GetSingle(Expression<Func<Publisher, bool>> filter)
+        public async Task<Publisher> GetSingleAsync(Expression<Func<Publisher, bool>> filter)
         {
             IQueryable<Publisher> query = dbSet;
 
-            return  await query.Include(p => p.Games)
+            return  await query
+                .Include(p => p.Games)
+                
                 .FirstOrDefaultAsync(filter);
 
         }
 
-        public async Task<IEnumerable<Publisher>> Get(Expression<Func<Publisher, bool>> filter = null,
+        public async Task<IEnumerable<Publisher>> GetAsync(Expression<Func<Publisher, bool>> filter = null,
             Func<IQueryable<Publisher>, IOrderedQueryable<Publisher>> orderBy = null)
         {
             IQueryable<Publisher> query = dbSet;
 
+            query = query
+                  .Include(p => p.Games);
+
             if (filter != null)
             {
-                query = query.Where(filter)
-                    .Include(p => p.Games);
+                query = query.Where(filter);
             }
 
 

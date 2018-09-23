@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BusinessLogicLayer.Dtos;
 using BusinessLogicLayer.Interfaces;
+using BusinessLogicLayer.Models.Dtos.PublisherDto;
 using Domain;
 using System;
 using System.Collections.Generic;
@@ -24,17 +25,69 @@ namespace BusinessLogicLayer.Services
 
 
 
-        public async Task CreatePublisher(PublisherDto newPublisher)
+        public async Task CreatePublisher(CreatePublisherDto newPublisher)
         {
-            var publisher = unitOfWork.PublisherRepository.GetSingle(p => p.Name == newPublisher.Name);
-            if (publisher != null)
+
+            using (unitOfWork)
             {
-                throw new ArgumentNullException("Publisher with such Name already exists");
+                var publisher = unitOfWork.PublisherRepository.GetSingleAsync(p => p.Name == newPublisher.Name);
+                if (publisher != null)
+                {
+                    throw new ArgumentNullException("Publisher with such Name already exists");
+                }
+
+                unitOfWork.PublisherRepository.Create(new Publisher() { Name = newPublisher.Name });
+
+                await unitOfWork.CommitAsync();
+            }
+        }
+
+        public async Task EditPublisher(EditPublisherDto genreDto)
+        {
+            using (unitOfWork)
+            {
+                var publisher = await unitOfWork.PublisherRepository.GetSingleAsync(p => p.Id == genreDto.Id);
+                if (publisher == null)
+                {
+                    throw new ArgumentException("Invalid publisher Id");
+                }
+                publisher = mapper.Map(genreDto, publisher);
+
+                unitOfWork.PublisherRepository.Update(publisher);
+                await unitOfWork.CommitAsync();
+
+            }
+        }
+
+        public async Task<List<PublisherDto>> GetAll()
+        {
+            using (unitOfWork)
+            {
+                var publisherEntities = await unitOfWork.PublisherRepository.GetAsync();
+                var dto = mapper.Map<List<PublisherDto>>(publisherEntities);
+                return dto;
+            }
+        }
+
+        public async Task<List<GameDto>> GetGamesOfPublisher(int id)
+        {
+            using (unitOfWork)
+            {
+                var publisherEntity = await unitOfWork.GameRepository.GetAsync(p => p.PublisherId == id);
+                var dto = mapper.Map<List<GameDto>>(publisherEntity);
+                return dto;
+            }
+        }
+
+        public async Task<PublisherDto> GetInfo(int id)
+        {
+            using (unitOfWork)
+            {
+                var publisherEntity = await unitOfWork.PublisherRepository.GetSingleAsync(p => p.Id == id);
+                var dto = mapper.Map<PublisherDto>(publisherEntity);
+                return dto;
             }
 
-            unitOfWork.PublisherRepository.Create(new Publisher() { Name = newPublisher.Name });
-
-            await unitOfWork.CommitAsync();
         }
     }
 }

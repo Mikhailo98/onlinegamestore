@@ -9,7 +9,7 @@ namespace BusinessLogicLayer.Models
     {
         public GameDto Game { get; set; }
 
-        public List<CommentDto> Comments { get; set; }
+        public List<GenreDto> Comments { get; set; }
         public List<PlatformDto> Platforms { get; set; }
         public PublisherDto Publisher { get; set; }
 

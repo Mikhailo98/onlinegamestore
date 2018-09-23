@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace BusinessLogicLayer.Dtos
+namespace WebApi.Models
 {
-    public class GenreDto
+    public class EditGenreModel
     {
+        [Required]
         public int Id { get; set; }
+
+        [Required]
         public string Name { get; set; }
 
         public int? HeadGenreId { get; set; }
-
-        public List<GenreDto> SubGenres { get; set; }
-
-        public List<GameDto> Games { get; set; }
     }
 }

@@ -16,6 +16,7 @@ using System.IO;
 using Autofac;
 using Microsoft.AspNetCore.Mvc;
 using Autofac.Extensions.DependencyInjection;
+using WebApi.Configuration;
 
 namespace WebApi
 {
@@ -34,21 +35,25 @@ namespace WebApi
                 c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
             });
 
-           
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddAutoMapper();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1); // Give me the 2.1 behaviors
 
             var builder = new ContainerBuilder();
+            // builder.RegisterType<IMapper>().As<Configuration.AutoMapperConfig>().InstancePerLifetimeScope();
             builder.RegisterModule(new DependencyServiceModule());
-            builder.Populate(services);
+            builder.RegisterModule(new AutoMapperModule());
 
+            //builder.RegisterModule(new AutoMapperModule());
+            //builder.Register(c => c.Resolve<MapperConfiguration>().CreateMapper(c.Resolve)).As<IMapper>().InstancePerLifetimeScope();
+
+            builder.Populate(services);
             var container = builder.Build();
+
             return new AutofacServiceProvider(container);
 
 
         }
-
-
 
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,6 +68,8 @@ namespace WebApi
 
             loggerFactory.AddDebug();
 
+
+            app.UseStaticFiles();
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
 
@@ -78,7 +85,7 @@ namespace WebApi
 
             app.Run(async (context) =>
             {
-                 context.Response.Redirect("swagger");
+                context.Response.Redirect("swagger");
             });
         }
     }

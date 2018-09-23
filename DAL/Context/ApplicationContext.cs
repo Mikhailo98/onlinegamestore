@@ -12,7 +12,7 @@ namespace DAL
     {
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
-           
+
         }
 
 
@@ -23,7 +23,7 @@ namespace DAL
 
         static ApplicationContext()
         {
-            //  Initialize();
+           //Initialize();
         }
 
         public static void Initialize()
@@ -53,6 +53,7 @@ namespace DAL
                 ctx.Genres.Add(genre2);
 
 
+                ctx.Comments.Add(new Comment() { Game = game1, Body = "First One"  });
 
                 ctx.PlatformTypes.Add(new PlatformType() { Type = "desktop" });
                 ctx.PlatformTypes.Add(new PlatformType() { Type = "mobile" });
@@ -83,7 +84,7 @@ namespace DAL
                .HasIndex(p => p.Name)
                .IsUnique();
 
-           
+
 
             //genre
             modelBuilder.Entity<Genre>()

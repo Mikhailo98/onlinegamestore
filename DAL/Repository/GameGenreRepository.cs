@@ -27,12 +27,16 @@ namespace DataAccessLayer.Repository
 
         public void Create(GenreGame entity)
         {
-            throw new NotImplementedException();
+            dbSet.Add(entity);
         }
 
         public void Delete(GenreGame entity)
         {
-            throw new NotImplementedException();
+            if (context.Entry(entity).State == EntityState.Detached)
+            {
+                dbSet.Attach(entity);
+            }
+            dbSet.Remove(entity);
         }
 
         public List<GenreGame> Get()
@@ -55,17 +59,14 @@ namespace DataAccessLayer.Repository
             throw new NotImplementedException();
         }
 
-        Task<List<GenreGame>> IRepository<GenreGame>.Get()
+       
+
+        Task<IEnumerable<GenreGame>> IRepository<GenreGame>.GetAsync(Expression<Func<GenreGame, bool>> filter, Func<IQueryable<GenreGame>, IOrderedQueryable<GenreGame>> orderBy)
         {
             throw new NotImplementedException();
         }
 
-        Task<IEnumerable<GenreGame>> IRepository<GenreGame>.Get(Expression<Func<GenreGame, bool>> filter, Func<IQueryable<GenreGame>, IOrderedQueryable<GenreGame>> orderBy)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<GenreGame> IRepository<GenreGame>.GetSingle(Expression<Func<GenreGame, bool>> filter)
+        Task<GenreGame> IRepository<GenreGame>.GetSingleAsync(Expression<Func<GenreGame, bool>> filter)
         {
             throw new NotImplementedException();
         }

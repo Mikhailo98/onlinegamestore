@@ -1,4 +1,7 @@
-﻿using BusinessLogicLayer.Interfaces;
+﻿using AutoMapper;
+using BusinessLogicLayer.Dtos;
+using BusinessLogicLayer.Interfaces;
+using BusinessLogicLayer.Models.Dtos.PublisherDto;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -8,15 +11,58 @@ using WebApi.Models;
 
 namespace WebApi.Controllers
 {
-    [Route("api/publisher")]
+    [Route("api/publishers")]
     public class PublisherController : Controller
     {
 
-        private readonly IPublisherService gameService;
+        private readonly IPublisherService publisherService;
+        private readonly IMapper mapper;
 
-        public PublisherController(IPublisherService gameService)
+
+        public PublisherController(IPublisherService gameService, IMapper mapper)
         {
-            this.gameService = gameService;
+            this.publisherService = gameService;
+            this.mapper = mapper;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            List<PublisherDto> dto = await publisherService.GetAll();
+            return Ok(dto);
+
+        }
+
+
+        [HttpGet("{id}/games")]
+        public async Task<IActionResult> GetAllGamesOfPublisher(int id)
+        {
+            List<GameDto> commentDtos = await publisherService.GetGamesOfPublisher(id);
+
+            return Ok(commentDtos);
+
+        }
+
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+
+            if (id <= 0)
+            {
+                return BadRequest("Invalid Publisher Id");
+            }
+
+            try
+            {
+                PublisherDto genre = await publisherService.GetInfo(id);
+                return Ok(genre);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
 
         [HttpPost]
@@ -30,14 +76,38 @@ namespace WebApi.Controllers
 
             try
             {
-                await gameService.CreatePublisher(new BusinessLogicLayer.Dtos.PublisherDto() { Name = publisher.Name });
+                await publisherService.CreatePublisher(new CreatePublisherDto() { Name = publisher.Name });
             }
-            catch (Exception ex )
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
 
             return Ok("Publisher was added");
         }
+
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, [FromBody]PublisherCreateModel value)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+             //var r = mapper.Map<EditPublisherDto>(value);
+
+
+            EditPublisherDto editedPubliisher = new EditPublisherDto()
+            {
+                Id = id,
+                Name = value.Name,
+            };
+
+            await publisherService.EditPublisher(editedPubliisher);
+
+            return Ok("Publisher was updated");
+        }
+
     }
 }
