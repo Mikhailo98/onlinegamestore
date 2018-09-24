@@ -23,38 +23,22 @@ namespace WebApi.Controllers
             this.commnetService = gameService;
             this.mapper = mapper;
         }
-               
-
-        // GET: api/Comment/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST: api/Comment
-        [HttpPost]
-        public void Post([FromBody]string value)
-        {
-        }
-
 
         [HttpPost("{id}/comments")]
         public async Task<IActionResult> CreateAnswerForAnotherComment(int id, [FromBody]CreateCommentModel comment)
         {
             if (id <= 0)
             {
-                return BadRequest("Invalid comment id");
+                return StatusCode(400, "Invalid comment id");
             }
 
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return StatusCode(400, ModelState);
             }
 
-            //Mapping 
-            //var commentDto = mapper.Map<CreateAnswerCommentDto>(comment);
-            //commentDto.AnswerId = id;
+
+            var y = mapper.Map<CreateAnswerCommentDto>(comment);
 
             var commentDto = new CreateAnswerCommentDto()
             {
@@ -69,10 +53,10 @@ namespace WebApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(400, ex.Message);
             }
 
-            return Ok("Answer was added");
+            return StatusCode(201, "Answer was added");
         }
 
     }

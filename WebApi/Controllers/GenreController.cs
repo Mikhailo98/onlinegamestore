@@ -36,7 +36,7 @@ namespace WebApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(400, ex.Message);
             }
         }
 
@@ -50,7 +50,7 @@ namespace WebApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(400, ex.Message);
             }
         }
 
@@ -62,17 +62,17 @@ namespace WebApi.Controllers
 
             if (id <= 0)
             {
-                return BadRequest("Invalid Genre Id");
+                return StatusCode(400, "Invalid Genre Id");
             }
 
             try
             {
                 var genre = await genreService.GetInfo(id);
-                return Ok(genre);
+                return StatusCode(200, genre);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(400, ex.Message);
             }
 
         }
@@ -83,7 +83,7 @@ namespace WebApi.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return StatusCode(400, ModelState);
 
             }
 
@@ -97,7 +97,7 @@ namespace WebApi.Controllers
             await genreService.EditGenre(genreDto);
 
 
-            return Ok();
+            return StatusCode(204);
         }
 
         [HttpPost]
@@ -106,7 +106,7 @@ namespace WebApi.Controllers
 
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return StatusCode(400, ModelState);
             }
 
             GenreCreateDto genre = new GenreCreateDto()
@@ -117,12 +117,12 @@ namespace WebApi.Controllers
             try
             {
                 await genreService.AddGenre(genre);
-                return Ok("Genre was added!");
+                return StatusCode(201, "Genre was added!");
             }
             catch (Exception ex)
             {
 
-                return BadRequest(ex.Message);
+                return StatusCode(400, ex.Message);
             }
 
         }
@@ -135,11 +135,11 @@ namespace WebApi.Controllers
             try
             {
                 await genreService.DeleteGenre(id);
-                return Ok("Genre was deleted");
+                return StatusCode(204, "Genre was deleted");
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(400, ex.Message);
             }
 
         }

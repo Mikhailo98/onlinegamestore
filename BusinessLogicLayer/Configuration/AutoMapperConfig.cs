@@ -30,6 +30,7 @@ namespace BusinessLogicLayer.Configuration
                      {
                          Id = p.PlatformTypeId,
                          Type = p.PlatformType.Type,
+                         
                      })))
                      .ForPath(p => p.Genres, opt => opt.MapFrom(j =>
                      j.GenreGames.Select(p => new GenreDto()

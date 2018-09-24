@@ -36,26 +36,22 @@ namespace DAL
             dbSet.Remove(entity);
         }
 
-        public async Task<List<Genre>> GetAsync()
-        {
-            return await dbSet.ToListAsync();
-        }
 
         public async Task<IEnumerable<Genre>> GetAsync(Expression<Func<Genre, bool>> filter = null, Func<IQueryable<Genre>, IOrderedQueryable<Genre>> orderBy = null)
         {
             IQueryable<Genre> query = dbSet;
 
+            query = query
+                  .Include(p => p.GenreGames)
+                  .ThenInclude(p => p.Game)
+                  .Include(p => p.HeadGenre)
+                  .Include(p => p.SubGenres);
+
             if (filter != null)
             {
-                query = query.Where(filter)
-                    .Include(p => p.GenreGames)
-                    .ThenInclude(p => p.Game)
-                    .Include(p => p.HeadGenre)
-                    .Include(p => p.SubGenres);
+                query = query.Where(filter);
             }
-
-
-
+                       
             if (orderBy != null)
             {
                 return await orderBy(query).ToListAsync();
@@ -82,7 +78,7 @@ namespace DAL
 
         public void Update(Genre entity)
         {
-             dbSet.Attach(entity);
+            dbSet.Attach(entity);
             context.Entry(entity).State = EntityState.Modified;
         }
     }

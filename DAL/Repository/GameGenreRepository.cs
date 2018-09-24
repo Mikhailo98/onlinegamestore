@@ -39,36 +39,48 @@ namespace DataAccessLayer.Repository
             dbSet.Remove(entity);
         }
 
-        public List<GenreGame> Get()
+
+        public async Task<IEnumerable<GenreGame>> GetAsync(Expression<Func<GenreGame, bool>> filter = null, Func<IQueryable<GenreGame>, IOrderedQueryable<GenreGame>> orderBy = null)
         {
-            throw new NotImplementedException();
+            IQueryable<GenreGame> query = dbSet;
+
+
+            query = query
+               .Include(p => p.Genre)
+                .Include(p => p.Game);
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+
+
+            if (orderBy != null)
+            {
+                return await orderBy(query).ToListAsync();
+            }
+            else
+            {
+                return await query.ToListAsync();
+            }
         }
 
-        public IEnumerable<GenreGame> Get(Expression<Func<GenreGame, bool>> filter = null, Func<IQueryable<GenreGame>, IOrderedQueryable<GenreGame>> orderBy = null)
+        public async Task<GenreGame> GetSingleAsync(Expression<Func<GenreGame, bool>> filter)
         {
-            throw new NotImplementedException();
-        }
+            IQueryable<GenreGame> query = dbSet;
 
-        public GenreGame GetSingle(Expression<Func<GenreGame, bool>> filter)
-        {
-            throw new NotImplementedException();
+            return await query
+                .Include(p => p.Genre)
+                .Include(p => p.Game)
+                .FirstOrDefaultAsync(filter);
         }
 
         public void Update(GenreGame entity)
         {
-            throw new NotImplementedException();
+            dbSet.Attach(entity);
+            context.Entry(entity).State = EntityState.Modified;
         }
 
-       
-
-        Task<IEnumerable<GenreGame>> IRepository<GenreGame>.GetAsync(Expression<Func<GenreGame, bool>> filter, Func<IQueryable<GenreGame>, IOrderedQueryable<GenreGame>> orderBy)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<GenreGame> IRepository<GenreGame>.GetSingleAsync(Expression<Func<GenreGame, bool>> filter)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

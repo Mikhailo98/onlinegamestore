@@ -15,8 +15,6 @@ namespace Domain.Repository
         void Delete(T entity);
 
         Task<T> GetSingleAsync(Expression<Func<T, bool>> filter);
-
-       // Task<List<T>> GetAsync();
         Task<IEnumerable<T>> GetAsync(
           Expression<Func<T, bool>> filter = null,
           Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null);

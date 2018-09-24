@@ -22,14 +22,14 @@ namespace WebApi.Controllers
 
         private readonly IGameService gameService;
         private readonly IMapper mapper;
-        private readonly IHostingEnvironment _appEnvironment;
+        private readonly IHostingEnvironment appEnvironment;
 
         public GamesController(IGameService gameService,
             IMapper mapper, IHostingEnvironment appEnvironment)
         {
             this.gameService = gameService;
             this.mapper = mapper;
-            _appEnvironment = appEnvironment;
+            this.appEnvironment = appEnvironment;
         }
 
 
@@ -38,10 +38,15 @@ namespace WebApi.Controllers
         [HttpGet("{id}/genres")]
         public async Task<IActionResult> GetGenresByGameKey(int id)
         {
-            List<GenreDto> commentDtos = await gameService.GetGenres(id);
-
-            return Ok(commentDtos);
-
+            try
+            {
+                List<GenreDto> commentDtos = await gameService.GetGenres(id);
+                return StatusCode(200, commentDtos);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
         }
 
 
@@ -49,13 +54,11 @@ namespace WebApi.Controllers
         public async Task<IActionResult> Download(int id)
         {
 
-            string j = await gameService.GetGameLocalPath(id);
+            string localpath = await gameService.GetGameLocalPath(id);
 
-            string filePath = Path.Combine(_appEnvironment.ContentRootPath, j);
-
-            string fileType = "application/pdf";
-
-            string fileName = "book.pdf";
+            string filePath = Path.Combine(appEnvironment.ContentRootPath, localpath);
+            string fileType = "application/pdf";
+            string fileName = "book.pdf";
 
             return PhysicalFile(filePath, fileType, fileName);
         }
@@ -78,7 +81,7 @@ namespace WebApi.Controllers
 
             await gameService.EditGame(dto);
 
-            return Ok();
+            return StatusCode(204);
         }
 
 
@@ -88,7 +91,7 @@ namespace WebApi.Controllers
 
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return StatusCode(400, ModelState);
             }
 
             CreateGameDto createdGame = new CreateGameDto()
@@ -107,10 +110,10 @@ namespace WebApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(400, ex.Message);
             }
 
-            return Ok("Game was added");
+            return StatusCode(201, "Game was added");
         }
 
 
@@ -121,11 +124,11 @@ namespace WebApi.Controllers
             try
             {
                 List<GameDto> games = await gameService.GetAll();
-                return Ok(games);
+                return StatusCode(200, games);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(400, ex.Message);
             }
         }
 
@@ -136,12 +139,12 @@ namespace WebApi.Controllers
             try
             {
                 var game = await gameService.GetInfo(id);
-                return Ok(game);
+                return StatusCode(200, game);
 
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(400, ex.Message);
 
             }
 
@@ -153,18 +156,18 @@ namespace WebApi.Controllers
 
             if (id <= 0)
             {
-                return BadRequest("Invalid image id");
+                return StatusCode(400, "Invalid image id");
             }
 
             try
             {
                 await gameService.DeleteGame(id);
-                return Ok("Game was successfully deleted ");
+                return StatusCode(204, "Game was successfully deleted ");
 
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(400, ex.Message);
             }
         }
 
@@ -176,18 +179,18 @@ namespace WebApi.Controllers
 
             if (id <= 0)
             {
-                return BadRequest("Invalid game id");
+                return StatusCode(400, "Invalid game id");
             }
 
 
             try
             {
                 await gameService.CommentGame(new CreateCommentDto() { Body = comment, GameId = id });
-                return Ok("Comment was added");
+                return StatusCode(201, "Comment was added");
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(400, ex.Message);
             }
 
         }
@@ -199,7 +202,7 @@ namespace WebApi.Controllers
 
             if (id <= 0)
             {
-                return BadRequest("Invalid game id");
+                return StatusCode(400, "Invalid game id");
             }
 
             try
@@ -210,7 +213,7 @@ namespace WebApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(400, ex.Message);
             }
         }
 

@@ -46,14 +46,15 @@ namespace DAL
         {
             IQueryable<PlatformType> query = dbSet;
 
+
+            query = query
+                   .Include(p => p.GamePlatformtypes)
+                   .ThenInclude(p => p.Game);
+
             if (filter != null)
             {
-                query = query.Where(filter)
-                    .Include(p => p.GamePlatformtypes)
-                    .ThenInclude(p => p.Game);
+                query = query.Where(filter);
             }
-
-
 
             if (orderBy != null)
             {

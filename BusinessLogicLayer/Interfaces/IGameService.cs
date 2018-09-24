@@ -19,6 +19,6 @@ namespace BusinessLogicLayer.Interfaces
         Task<List<CommentDto>> GetAllComments(int id);
         Task<List<GenreDto>> GetGenres(int id);
         Task CommentGame(CreateCommentDto comment);
-Task<string> GetGameLocalPath(int id);
+        Task<string> GetGameLocalPath(int id);
     }
 }

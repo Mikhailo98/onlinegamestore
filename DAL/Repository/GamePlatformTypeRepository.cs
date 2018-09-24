@@ -24,42 +24,12 @@ namespace DataAccessLayer.Repository
             dbSet = context.Set<GamePlatformType>();
         }
 
-        public Task Create(GamePlatformType entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task Delete(GamePlatformType entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<GamePlatformType>> GetAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<GamePlatformType>> GetAsync(Expression<Func<GamePlatformType, bool>> filter = null, Func<IQueryable<GamePlatformType>, IOrderedQueryable<GamePlatformType>> orderBy = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<GamePlatformType> GetSingleAsync(Expression<Func<GamePlatformType, bool>> filter)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task Update(GamePlatformType entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        void IRepository<GamePlatformType>.Create(GamePlatformType entity)
+        public void Create(GamePlatformType entity)
         {
             dbSet.Add(entity);
         }
 
-        void IRepository<GamePlatformType>.Delete(GamePlatformType entity)
+        public void Delete(GamePlatformType entity)
         {
             if (context.Entry(entity).State == EntityState.Detached)
             {
@@ -68,9 +38,45 @@ namespace DataAccessLayer.Repository
             dbSet.Remove(entity);
         }
 
-        void IRepository<GamePlatformType>.Update(GamePlatformType entity)
+
+        public async Task<IEnumerable<GamePlatformType>> GetAsync(Expression<Func<GamePlatformType, bool>> filter = null, Func<IQueryable<GamePlatformType>, IOrderedQueryable<GamePlatformType>> orderBy = null)
         {
-            throw new NotImplementedException();
+            IQueryable<GamePlatformType> query = dbSet;
+
+            query = query
+                 .Include(p => p.Game)
+                 .Include(p => p.PlatformType);
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+
+            if (orderBy != null)
+            {
+                return await orderBy(query).ToListAsync();
+            }
+ 
+                return await query.ToListAsync();
+
         }
+
+        public async Task<GamePlatformType> GetSingleAsync(Expression<Func<GamePlatformType, bool>> filter)
+        {
+            IQueryable<GamePlatformType> query = dbSet;
+
+            return await query
+                 .Include(p => p.Game)
+                 .Include(p => p.PlatformType)
+             .FirstOrDefaultAsync(filter);
+        }
+
+        public void Update(GamePlatformType entity)
+        {
+            dbSet.Attach(entity);
+            context.Entry(entity).State = EntityState.Modified;
+        }
+
     }
 }

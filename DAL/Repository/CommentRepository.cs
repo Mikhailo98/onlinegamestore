@@ -37,11 +37,7 @@ namespace DAL.Repository
             dbSet.Remove(entity);
         }
 
-        public async Task<List<Comment>> GetAsync()
-        {
-            return await dbSet.ToListAsync();
-        }
-
+     
         public async Task<IEnumerable<Comment>> GetAsync(Expression<Func<Comment, bool>> filter = null, Func<IQueryable<Comment>, IOrderedQueryable<Comment>> orderBy = null)
         {
             IQueryable<Comment> query = dbSet;

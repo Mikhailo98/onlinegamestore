@@ -50,7 +50,7 @@ namespace WebApi.Controllers
 
             if (id <= 0)
             {
-                return BadRequest("Invalid Publisher Id");
+                return StatusCode(400, "Invalid Publisher Id");
             }
 
             try
@@ -60,7 +60,7 @@ namespace WebApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(400, ex.Message);
             }
 
         }
@@ -71,7 +71,7 @@ namespace WebApi.Controllers
 
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return StatusCode(400, ModelState);
             }
 
             try
@@ -80,10 +80,10 @@ namespace WebApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(400, ex.Message);
             }
 
-            return Ok("Publisher was added");
+            return StatusCode(201, "Publisher was added");
         }
 
 
@@ -92,11 +92,8 @@ namespace WebApi.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return StatusCode(400, ModelState);
             }
-
-             //var r = mapper.Map<EditPublisherDto>(value);
-
 
             EditPublisherDto editedPubliisher = new EditPublisherDto()
             {
@@ -106,7 +103,7 @@ namespace WebApi.Controllers
 
             await publisherService.EditPublisher(editedPubliisher);
 
-            return Ok("Publisher was updated");
+            return StatusCode(200,  "Publisher was updated");
         }
 
     }
