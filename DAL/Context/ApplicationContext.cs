@@ -15,14 +15,15 @@ namespace DAL
 
         }
 
-
         public ApplicationContext() : base()
         {
+            //  Database.EnsureDeleted();
         }
 
 
         static ApplicationContext()
         {
+
            //Initialize();
         }
 
@@ -30,6 +31,7 @@ namespace DAL
         {
             using (var ctx = new ApplicationContext())
             {
+
                 ctx.Database.EnsureDeleted();
                 ctx.Database.EnsureCreated();
 
@@ -38,10 +40,40 @@ namespace DAL
                 var game1 = new Game { Name = "StarCraft 2", Description = "An awesome game", Publisher = publisher1 };
 
                 var genre1 = new Genre { Name = "Strategy" };
-                var genre2 = new Genre { Name = "RTS" };
+                var genre2 = new Genre { Name = "RTS", HeadGenre = genre1 };
+
 
                 var gameGenre1 = new GenreGame() { Game = game1, Genre = genre1 };
                 var gameGenre2 = new GenreGame() { Game = game1, Genre = genre2 };
+
+
+                var platformtype1 = new PlatformType() { Type = "desktop" };
+                var platformtype2 = new PlatformType()
+                {
+                    Type = "mobile",
+                    GamePlatformtypes = new List<GamePlatformType>()
+                   {
+                       new GamePlatformType() { Game = game1 }
+                   }
+                };
+                var platformtype3 = new PlatformType()
+                {
+                    Type = "console",
+                    GamePlatformtypes = new List<GamePlatformType>()
+                   {
+                       new GamePlatformType() { Game = game1 }
+                   }
+                };
+                var platformtype4 = new PlatformType()
+                {
+                    Type = "browser",
+                    GamePlatformtypes = new List<GamePlatformType>()
+                   {
+                       new GamePlatformType() { Game = game1 }
+                   }
+                };
+
+
 
                 game1.GenreGames = new List<GenreGame> { gameGenre1, gameGenre2 };
 
@@ -52,13 +84,25 @@ namespace DAL
                 ctx.Genres.Add(genre1);
                 ctx.Genres.Add(genre2);
 
+                var comment1 = new Comment() { Game = game1, Body = "First One" };
+                var comment2 = new Comment() { Game = game1, Body = "Second", ParentComment = comment1 };
+                var comment3 = new Comment() { Game = game1, Body = "Third", ParentComment = comment2 };
 
-                ctx.Comments.Add(new Comment() { Game = game1, Body = "First One"  });
+                var comment22 = new Comment() { Game = game1, Body = "Third", ParentComment = comment1 };
 
-                ctx.PlatformTypes.Add(new PlatformType() { Type = "desktop" });
-                ctx.PlatformTypes.Add(new PlatformType() { Type = "mobile" });
-                ctx.PlatformTypes.Add(new PlatformType() { Type = "console" });
-                ctx.PlatformTypes.Add(new PlatformType() { Type = "browser" });
+
+                ctx.Comments.Add(comment1);
+                ctx.Comments.Add(comment2);
+                ctx.Comments.Add(comment3);
+                ctx.Comments.Add(comment22);
+
+
+
+                ctx.PlatformTypes.Add(platformtype1);
+                ctx.PlatformTypes.Add(platformtype2);
+                ctx.PlatformTypes.Add(platformtype3);
+                ctx.PlatformTypes.Add(platformtype4);
+
 
                 ctx.SaveChanges();
             }
@@ -73,7 +117,9 @@ namespace DAL
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=GamesStore;Trusted_Connection=True;");
+            optionsBuilder
+                .UseLazyLoadingProxies()
+                .UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=GamesStore;Trusted_Connection=True;");
 
         }
 
@@ -90,6 +136,15 @@ namespace DAL
             modelBuilder.Entity<Genre>()
              .HasIndex(p => p.Name)
              .IsUnique();
+
+
+            //Genre-subgenres-> cascade deleting
+            modelBuilder.Entity<Genre>()
+                .HasMany(p => p.SubGenres)
+                .WithOne(b => b.HeadGenre)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
 
             //platformtype
             modelBuilder.Entity<PlatformType>()
@@ -144,6 +199,7 @@ namespace DAL
                     .WithMany(s => s.GamePlatformTypes)
                     .HasForeignKey(sc => sc.GameId);
 
+            base.OnModelCreating(modelBuilder);
 
         }
     }

@@ -14,6 +14,8 @@ namespace WebApi.Models
 
         [Required]
         public int GameId { get; set; }
-        
+
+        [Required]
+        public string Name { get;  set; }
     }
 }

@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessLayer", "DAL\Data
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogicLayer", "BusinessLogicLayer\BusinessLogicLayer.csproj", "{91FF6669-D37E-4009-8A2D-E0CD19711E0F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{7FE7C220-9D49-4B1A-848D-7DFB183FC9B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "WebApi\WebApi.csproj", "{7FE7C220-9D49-4B1A-848D-7DFB183FC9B8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogicLayer.Test", "WebApi.Test\BusinessLogicLayer.Test.csproj", "{BE47F1AE-946C-4335-B1A0-8E86669C8060}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{7FE7C220-9D49-4B1A-848D-7DFB183FC9B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7FE7C220-9D49-4B1A-848D-7DFB183FC9B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7FE7C220-9D49-4B1A-848D-7DFB183FC9B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE47F1AE-946C-4335-B1A0-8E86669C8060}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE47F1AE-946C-4335-B1A0-8E86669C8060}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE47F1AE-946C-4335-B1A0-8E86669C8060}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE47F1AE-946C-4335-B1A0-8E86669C8060}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

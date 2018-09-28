@@ -43,7 +43,7 @@ namespace DAL.Repository
             IQueryable<Comment> query = dbSet;
 
             query = query
-               .Include(p => p.Answer)
+               .Include(p => p.ParentComment)
                .Include(p => p.Game);
 
 
@@ -68,7 +68,7 @@ namespace DAL.Repository
             IQueryable<Comment> query = dbSet;
 
             return await query
-             .Include(p => p.Answer)
+             .Include(p => p.ParentComment)
            .Include(p => p.Game)
            .FirstOrDefaultAsync(filter);
 

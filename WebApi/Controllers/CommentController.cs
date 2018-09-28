@@ -37,26 +37,19 @@ namespace WebApi.Controllers
                 return StatusCode(400, ModelState);
             }
 
-
-            var y = mapper.Map<CreateAnswerCommentDto>(comment);
-
             var commentDto = new CreateAnswerCommentDto()
             {
-                AnswerId = id,
+                ParentCommentId = id,
                 Body = comment.Body,
-                GameId = comment.GameId
+                GameId = comment.GameId,
+                Name = comment.Name
             };
 
-            try
-            {
-                await commnetService.AddComment(commentDto);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(400, ex.Message);
-            }
+            await commnetService.AnswerOnComment(commentDto);
 
-            return StatusCode(201, "Answer was added");
+            return StatusCode(201, "Comment was created");
+
+
         }
 
     }

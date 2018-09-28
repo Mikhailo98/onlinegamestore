@@ -39,7 +39,7 @@ namespace WebApi.Controllers
         {
             List<GameDto> commentDtos = await publisherService.GetGamesOfPublisher(id);
 
-            return Ok(commentDtos);
+            return StatusCode(200, commentDtos);
 
         }
 
@@ -53,15 +53,10 @@ namespace WebApi.Controllers
                 return StatusCode(400, "Invalid Publisher Id");
             }
 
-            try
-            {
-                PublisherDto genre = await publisherService.GetInfo(id);
-                return Ok(genre);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(400, ex.Message);
-            }
+
+            PublisherDto genre = await publisherService.GetInfo(id);
+            return StatusCode(200, genre);
+
 
         }
 
@@ -74,14 +69,9 @@ namespace WebApi.Controllers
                 return StatusCode(400, ModelState);
             }
 
-            try
-            {
-                await publisherService.CreatePublisher(new CreatePublisherDto() { Name = publisher.Name });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(400, ex.Message);
-            }
+
+            await publisherService.CreatePublisher(new CreatePublisherDto() { Name = publisher.Name });
+
 
             return StatusCode(201, "Publisher was added");
         }
@@ -103,7 +93,7 @@ namespace WebApi.Controllers
 
             await publisherService.EditPublisher(editedPubliisher);
 
-            return StatusCode(200,  "Publisher was updated");
+            return StatusCode(200, "Publisher was updated");
         }
 
     }

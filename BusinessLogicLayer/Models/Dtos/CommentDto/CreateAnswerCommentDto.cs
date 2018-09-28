@@ -6,6 +6,9 @@
 
         public int GameId { get; set; }
 
-        public int AnswerId { get; set; }
+        public int ParentCommentId { get; set; }
+        
+        public string Name { get; set; }
+
     }
 }

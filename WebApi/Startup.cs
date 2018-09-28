@@ -17,6 +17,8 @@ using Autofac;
 using Microsoft.AspNetCore.Mvc;
 using Autofac.Extensions.DependencyInjection;
 using WebApi.Configuration;
+using WebApi.Middleware;
+using NLog.Extensions.Logging;
 
 namespace WebApi
 {
@@ -59,14 +61,15 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole();
+            // loggerFactory.AddConsole();
 
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            loggerFactory.AddDebug();
+            //   loggerFactory.AddNLog();
+
 
 
             app.UseStaticFiles();
@@ -80,6 +83,7 @@ namespace WebApi
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
 
+            app.UseMiddleware<HttpStatusCodeExceptionMiddleware>();
 
             app.UseMvc();
 

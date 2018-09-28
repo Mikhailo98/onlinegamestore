@@ -12,28 +12,31 @@ using Domain.Repository;
 using BusinessLogicLayer.Models;
 using BusinessLogicLayer.Models.Dtos.GameDto;
 using BusinessLogicLayer.Models.Dtos.CommentDto;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("BusinessLogicLayer.Test")]
 
 namespace BusinessLogicLayer.Services
 {
-    internal class GameService : IGameService
+    class GameService : IGameService
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
 
 
-        public GameService(IUnitOfWork unit, IMapper mapper)
+        public GameService(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            unitOfWork = unit;
+            this.unitOfWork = unitOfWork;
             this.mapper = mapper;
         }
-
 
 
         public async Task AddGame(CreateGameDto gameDto)
         {
             using (unitOfWork)
             {
-                if (await unitOfWork.GameRepository.GetSingleAsync(g => g.Name == gameDto.Name && g.PublisherId == gameDto.PublisherId) != null)
+                if (await unitOfWork.GameRepository.GetSingleAsync(g =>
+                g.Name == gameDto.Name && g.PublisherId == gameDto.PublisherId) != null)
                 {
                     throw new ArgumentException("Game with such name of such publisher already exists");
                 }
@@ -46,10 +49,10 @@ namespace BusinessLogicLayer.Services
 
                 var newGame = mapper.Map<Game>(gameDto);
 
-                await CheckPlatforms(gameDto.Platforms, newGame);
-                await CheckGenres(gameDto.Genres, newGame);
-
                 unitOfWork.GameRepository.Create(newGame);
+
+                await AddPlatforms(gameDto.Platforms, newGame);
+                await AddGenres(gameDto.Genres, newGame);
 
                 await unitOfWork.CommitAsync();
 
@@ -63,7 +66,7 @@ namespace BusinessLogicLayer.Services
         /// <param name="platforms"></param>
         /// <param name="game"></param>
         /// <returns></returns>
-        private async Task CheckGenres(List<int> genres, Game game)
+        private async Task AddGenres(List<int> genres, Game game)
         {
             //checking for genres 
             foreach (var item in genres)
@@ -71,7 +74,7 @@ namespace BusinessLogicLayer.Services
                 var returnGenre = await unitOfWork.GenreRepository.GetSingleAsync(i => i.Id == item);
                 if (returnGenre == null)
                 {
-                    throw new ArgumentException($"Invalid genre id: {item}");
+                    throw new ArgumentException($"Invalid genre id: {item}", nameof(returnGenre));
                 }
                 unitOfWork.GameGenreRepository.Create(new GenreGame() { Game = game, Genre = returnGenre });
             }
@@ -84,7 +87,7 @@ namespace BusinessLogicLayer.Services
         /// </summary>
         /// <param name="platforms"></param>
         /// <returns></returns>
-        private async Task CheckPlatforms(List<int> platforms, Game game)
+        private async Task AddPlatforms(List<int> platforms, Game game)
         {
             foreach (var item in platforms)
             {
@@ -135,8 +138,8 @@ namespace BusinessLogicLayer.Services
                 //mapping back to real entity
                 gameEntity = mapper.Map(editedGame, gameEntity);
 
-                await EditPlatforms(editedGame.Platforms, gameEntity);
-                await EditGenre(editedGame.Genres, gameEntity);
+                await DeletePlatforms(editedGame.Platforms, gameEntity);
+                await DeleteGenres(editedGame.Genres, gameEntity);
 
                 unitOfWork.GameRepository.Update(gameEntity);
 
@@ -146,24 +149,24 @@ namespace BusinessLogicLayer.Services
 
         #region Edit Game private methods
 
-        private async Task EditPlatforms(List<int> platformsId, Game entity)
+        private async Task DeletePlatforms(List<int> platformsId, Game entity)
         {
             foreach (var platform in entity.GamePlatformTypes)
             {
                 unitOfWork.GamePlatformTypeRepository.Delete(platform);
             }
 
-            await CheckPlatforms(platformsId, entity);
+            await AddPlatforms(platformsId, entity);
         }
 
-        private async Task EditGenre(List<int> genreIds, Game entity)
+        private async Task DeleteGenres(List<int> genreIds, Game entity)
         {
             foreach (var genre in entity.GenreGames)
             {
                 unitOfWork.GameGenreRepository.Delete(genre);
             }
 
-            await CheckGenres(genreIds, entity);
+            await AddGenres(genreIds, entity);
         }
 
 
@@ -176,13 +179,14 @@ namespace BusinessLogicLayer.Services
             {
                 var gameEntity = await unitOfWork.GameRepository
                     .GetSingleAsync(filter: g => g.Id == id);
-
+                
                 if (gameEntity == null)
                 {
                     throw new ArgumentException("Invalid game id");
                 }
 
                 var dto = mapper.Map<GameDto>(gameEntity);
+                dto.Comments = dto.Comments.Where(p => p.ParentCommentId == null)?.ToList();
                 return dto;
             };
         }
@@ -204,8 +208,8 @@ namespace BusinessLogicLayer.Services
         {
             using (unitOfWork)
             {
-                var commentsEntity = await unitOfWork.CommentRepository.GetAsync(c => c.GameId == id);
-                var comments = mapper.Map<List<CommentDto>>(commentsEntity);
+                var gameEntity = await unitOfWork.GameRepository.GetSingleAsync(c => c.Id == id);
+                var comments = mapper.Map<List<CommentDto>>(gameEntity.Comments);
                 return comments;
             }
 
@@ -216,8 +220,8 @@ namespace BusinessLogicLayer.Services
             using (unitOfWork)
             {
                 var gamesEntity = await unitOfWork.GameRepository.GetSingleAsync(c => c.Id == id);
-                var r = mapper.Map<List<GenreDto>>(gamesEntity.GenreGames);
-                return r;
+                var genres = mapper.Map<List<GenreDto>>(gamesEntity.GenreGames);
+                return genres;
             }
         }
 
@@ -239,10 +243,6 @@ namespace BusinessLogicLayer.Services
                 });
 
                 await unitOfWork.CommitAsync();
-
-
-
-
             }
         }
 
@@ -257,4 +257,6 @@ namespace BusinessLogicLayer.Services
             return "Files/book.pdf";
         }
     }
+
+
 }

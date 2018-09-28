@@ -16,8 +16,14 @@ namespace Domain
         public int GameId { get; set; }
         public virtual Game Game { get; set; }
 
-        public int? AnswerId { get; set; }
-        public virtual Comment Answer { get; set; }
+        public int? ParentCommentId { get; set; }
+        public virtual Comment ParentComment { get; set; }
 
+        public virtual ICollection<Comment> ChildComments { get; set; }
+
+        public Comment()
+        {
+            ChildComments = new List<Comment>();
+        }
     }
 }

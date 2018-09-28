@@ -8,6 +8,6 @@ namespace BusinessLogicLayer.Interfaces
 {
     public interface ICommentService
     {
-        Task AddComment(CreateAnswerCommentDto comment);
+        Task AnswerOnComment(CreateAnswerCommentDto comment);
     }
 }

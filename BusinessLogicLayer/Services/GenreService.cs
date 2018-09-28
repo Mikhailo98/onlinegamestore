@@ -110,7 +110,7 @@ namespace BusinessLogicLayer.Services
         }
 
 
-
+        //TODO: Automapper genregame configure(games don't show)
         public async Task<List<GenreDto>> GetAll()
         {
             using (unitOfWork)
@@ -138,6 +138,8 @@ namespace BusinessLogicLayer.Services
 
         }
 
+
+        //TODO: automapper genres configure(games should show publihser and platforms)
         public async Task<List<GameDto>> GetGamesOfGenre(int id)
         {
 

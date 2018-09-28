@@ -12,6 +12,8 @@ namespace BusinessLogicLayer.Dtos
         public string Body { get; set; }
 
         public int? GameId { get; set; }
-        public int? AnswerId { get; set; }
+        public int? ParentCommentId { get; set; }
+
+        public List<CommentDto> ChildComments { get; set; }
     }
 }

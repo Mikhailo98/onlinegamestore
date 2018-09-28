@@ -1,0 +1,181 @@
+2018-09-25 13:45:12.6612 Info Message Template Auto Format enabled
+2018-09-25 13:45:12.6804 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-25 13:45:12.8414 Info Adding target File Target[allfile]
+2018-09-25 13:45:12.8540 Info Adding target File Target[ownFile-web]
+2018-09-25 13:45:12.8540 Info Configured from an XML element in D:\Mykhailo_Kovalchuk\Game Store\Domain\WebApi\bin\Debug\netcoreapp2.1\nlog.config...
+2018-09-25 13:45:12.8795 Info Found 45 configuration items
+2018-09-25 15:09:23.6362 Info Message Template Auto Format enabled
+2018-09-25 15:09:23.6482 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-25 15:09:23.7335 Info Adding target File Target[allfile]
+2018-09-25 15:09:23.7457 Info Adding target File Target[ownFile-web]
+2018-09-25 15:09:23.7576 Info Configured from an XML element in D:\Mykhailo_Kovalchuk\Game Store\Domain\WebApi\bin\Debug\netcoreapp2.1\nlog.config...
+2018-09-25 15:09:23.7717 Info Found 45 configuration items
+2018-09-25 15:10:45.6872 Info Message Template Auto Format enabled
+2018-09-25 15:10:45.6975 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-25 15:10:45.7914 Info Adding target File Target[allfile]
+2018-09-25 15:10:45.8006 Info Adding target File Target[ownFile-web]
+2018-09-25 15:10:45.8006 Info Configured from an XML element in D:\Mykhailo_Kovalchuk\Game Store\Domain\WebApi\bin\Debug\netcoreapp2.1\nlog.config...
+2018-09-25 15:10:45.8197 Info Found 45 configuration items
+2018-09-25 15:12:38.3154 Info Message Template Auto Format enabled
+2018-09-25 15:12:38.3396 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-25 15:12:38.6328 Info Adding target File Target[allfile]
+2018-09-25 15:12:38.8709 Info Adding target File Target[ownFile-web]
+2018-09-25 15:12:38.8878 Info Configured from an XML element in D:\Mykhailo_Kovalchuk\Game Store\Domain\WebApi\bin\Debug\netcoreapp2.1\nlog.config...
+2018-09-25 15:12:38.9311 Info Found 45 configuration items
+2018-09-25 15:13:32.1862 Info Message Template Auto Format enabled
+2018-09-25 15:13:32.1967 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-25 15:13:32.2688 Info Adding target File Target[allfile]
+2018-09-25 15:13:32.2688 Info Adding target File Target[ownFile-web]
+2018-09-25 15:13:32.2956 Info Configured from an XML element in D:\Mykhailo_Kovalchuk\Game Store\Domain\WebApi\bin\Debug\netcoreapp2.1\nlog.config...
+2018-09-25 15:13:32.3090 Info Found 45 configuration items
+2018-09-25 15:15:09.0832 Info Message Template Auto Format enabled
+2018-09-25 15:15:09.0832 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-25 15:15:09.1634 Info Adding target File Target[allfile]
+2018-09-25 15:15:09.1634 Info Adding target File Target[ownFile-web]
+2018-09-25 15:15:09.1782 Info Configured from an XML element in D:\Mykhailo_Kovalchuk\Game Store\Domain\WebApi\bin\Debug\netcoreapp2.1\nlog.config...
+2018-09-25 15:15:09.1910 Info Found 45 configuration items
+2018-09-25 15:17:29.6142 Info Message Template Auto Format enabled
+2018-09-25 15:17:29.6274 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-25 15:17:29.7038 Info Adding target File Target[allfile]
+2018-09-25 15:17:29.7143 Info Adding target File Target[ownFile-web]
+2018-09-25 15:17:29.7219 Info Configured from an XML element in D:\Mykhailo_Kovalchuk\Game Store\Domain\WebApi\bin\Debug\netcoreapp2.1\nlog.config...
+2018-09-25 15:17:29.7219 Info Found 45 configuration items
+2018-09-25 15:18:44.7891 Info Message Template Auto Format enabled
+2018-09-25 15:18:44.7997 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-25 15:18:44.8886 Info Adding target File Target[allfile]
+2018-09-25 15:18:44.9050 Info Adding target File Target[ownFile-web]
+2018-09-25 15:18:44.9129 Info Configured from an XML element in D:\Mykhailo_Kovalchuk\Game Store\Domain\WebApi\bin\Debug\netcoreapp2.1\nlog.config...
+2018-09-25 15:18:44.9252 Info Found 45 configuration items
+2018-09-25 15:20:34.4311 Info Message Template Auto Format enabled
+2018-09-25 15:20:34.4426 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-25 15:20:34.6945 Info Adding target File Target[allfile]
+2018-09-25 15:20:34.6945 Info Adding target File Target[ownFile-web]
+2018-09-25 15:20:34.7109 Info Configured from an XML element in D:\Mykhailo_Kovalchuk\Game Store\Domain\WebApi\bin\Debug\netcoreapp2.1\nlog.config...
+2018-09-25 15:20:34.7254 Info Found 45 configuration items
+2018-09-25 15:22:39.3612 Info Message Template Auto Format enabled
+2018-09-25 15:22:39.3612 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-25 15:22:39.5226 Info Adding target File Target[allfile]
+2018-09-25 15:22:39.5822 Info Adding target File Target[ownFile-web]
+2018-09-25 15:22:39.5822 Info Configured from an XML element in D:\Mykhailo_Kovalchuk\Game Store\Domain\WebApi\bin\Debug\netcoreapp2.1\nlog.config...
+2018-09-25 15:22:39.6030 Info Found 45 configuration items
+2018-09-25 15:53:21.6915 Info Message Template Auto Format enabled
+2018-09-25 15:53:21.7016 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-25 15:53:21.7505 Info Adding target File Target[allfile]
+2018-09-25 15:53:21.7505 Info Adding target File Target[ownFile-web]
+2018-09-25 15:53:21.7606 Info Configured from an XML element in D:\Mykhailo_Kovalchuk\Game Store\Domain\WebApi\bin\Debug\netcoreapp2.1\nlog.config...
+2018-09-25 15:53:21.7720 Info Found 45 configuration items
+2018-09-25 15:59:09.0690 Info Logger closing down...
+2018-09-25 15:59:09.0928 Info Closing old configuration.
+2018-09-25 15:59:09.1104 Info Logger has been closed down.
+2018-09-25 15:59:09.1104 Info Shutting down logging...
+2018-09-25 15:59:09.1104 Info Logger has been shut down.
+2018-09-25 15:59:23.2622 Info Message Template Auto Format enabled
+2018-09-25 15:59:23.2728 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-25 15:59:23.3222 Info Adding target File Target[allfile]
+2018-09-25 15:59:23.3222 Info Adding target File Target[ownFile-web]
+2018-09-25 15:59:23.3323 Info Configured from an XML element in D:\Mykhailo_Kovalchuk\Game Store\Domain\WebApi\bin\Debug\netcoreapp2.1\nlog.config...
+2018-09-25 15:59:23.3437 Info Found 45 configuration items
+2018-09-25 16:02:11.5366 Info Shutting down logging...
+2018-09-25 16:02:11.5878 Info Logger has been shut down.
+2018-09-25 16:02:19.3577 Info Message Template Auto Format enabled
+2018-09-25 16:02:19.3577 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-25 16:02:19.4421 Info Adding target File Target[allfile]
+2018-09-25 16:02:19.4531 Info Adding target File Target[ownFile-web]
+2018-09-25 16:02:19.4531 Info Configured from an XML element in D:\Mykhailo_Kovalchuk\Game Store\Domain\WebApi\bin\Debug\netcoreapp2.1\nlog.config...
+2018-09-25 16:02:19.4882 Info Found 45 configuration items
+2018-09-25 16:06:41.9745 Info Message Template Auto Format enabled
+2018-09-25 16:06:41.9903 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-25 16:06:42.1302 Info Adding target File Target[allfile]
+2018-09-25 16:06:42.1387 Info Adding target File Target[ownFile-web]
+2018-09-25 16:06:42.1387 Info Configured from an XML element in D:\Mykhailo_Kovalchuk\Game Store\Domain\WebApi\bin\Debug\netcoreapp2.1\nlog.config...
+2018-09-25 16:06:42.1580 Info Found 45 configuration items
+2018-09-25 16:20:02.8444 Info Message Template Auto Format enabled
+2018-09-25 16:20:02.8589 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-25 16:20:03.0269 Info Adding target File Target[allfile]
+2018-09-25 16:20:03.0385 Info Adding target File Target[ownFile-web]
+2018-09-25 16:20:03.0385 Info Configured from an XML element in D:\Mykhailo_Kovalchuk\Game Store\Domain\WebApi\bin\Debug\netcoreapp2.1\nlog.config...
+2018-09-25 16:20:03.0595 Info Found 45 configuration items
+2018-09-25 16:21:24.4735 Info Message Template Auto Format enabled
+2018-09-25 16:21:24.4735 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-25 16:21:24.6047 Info Adding target File Target[allfile]
+2018-09-25 16:21:24.6190 Info Adding target File Target[ownFile-web]
+2018-09-25 16:21:24.6314 Info Configured from an XML element in D:\Mykhailo_Kovalchuk\Game Store\Domain\WebApi\bin\Debug\netcoreapp2.1\nlog.config...
+2018-09-25 16:21:24.6497 Info Found 45 configuration items
+2018-09-25 16:29:02.4057 Info Message Template Auto Format enabled
+2018-09-25 16:29:02.4229 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-25 16:29:02.5546 Info Adding target File Target[allfile]
+2018-09-25 16:29:02.5655 Info Adding target File Target[ownFile-web]
+2018-09-25 16:29:02.5655 Info Configured from an XML element in D:\Mykhailo_Kovalchuk\Game Store\Domain\WebApi\bin\Debug\netcoreapp2.1\nlog.config...
+2018-09-25 16:29:02.5886 Info Found 45 configuration items
+2018-09-25 17:03:40.7718 Info Message Template Auto Format enabled
+2018-09-25 17:03:40.7884 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-25 17:03:40.9325 Info Adding target File Target[allfile]
+2018-09-25 17:03:40.9517 Info Adding target File Target[ownFile-web]
+2018-09-25 17:03:40.9517 Info Configured from an XML element in D:\Mykhailo_Kovalchuk\Game Store\Domain\WebApi\bin\Debug\netcoreapp2.1\nlog.config...
+2018-09-25 17:03:40.9771 Info Found 45 configuration items
+2018-09-25 17:04:59.3512 Info Message Template Auto Format enabled
+2018-09-25 17:04:59.3653 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-25 17:04:59.5789 Info Adding target File Target[allfile]
+2018-09-25 17:04:59.6362 Info Adding target File Target[ownFile-web]
+2018-09-25 17:04:59.6516 Info Configured from an XML element in D:\Mykhailo_Kovalchuk\Game Store\Domain\WebApi\bin\Debug\netcoreapp2.1\nlog.config...
+2018-09-25 17:04:59.6762 Info Found 45 configuration items
+2018-09-25 17:10:04.7511 Info Message Template Auto Format enabled
+2018-09-25 17:10:04.8113 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-25 17:10:04.9563 Info Adding target File Target[allfile]
+2018-09-25 17:10:04.9914 Info Adding target File Target[ownFile-web]
+2018-09-25 17:10:05.0013 Info Configured from an XML element in D:\Mykhailo_Kovalchuk\Game Store\Domain\WebApi\bin\Debug\netcoreapp2.1\nlog.config...
+2018-09-25 17:10:05.0151 Info Found 45 configuration items
+2018-09-25 17:15:45.5175 Info Message Template Auto Format enabled
+2018-09-25 17:15:45.5285 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-25 17:15:45.6116 Info Adding target File Target[allfile]
+2018-09-25 17:15:45.6464 Info Adding target File Target[ownFile-web]
+2018-09-25 17:15:45.6464 Info Configured from an XML element in D:\Mykhailo_Kovalchuk\Game Store\Domain\WebApi\bin\Debug\netcoreapp2.1\nlog.config...
+2018-09-25 17:15:45.6734 Info Found 45 configuration items
+2018-09-25 17:23:13.7286 Info Message Template Auto Format enabled
+2018-09-25 17:23:13.7438 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-25 17:23:13.9165 Info Adding target File Target[allfile]
+2018-09-25 17:23:13.9387 Info Adding target File Target[ownFile-web]
+2018-09-25 17:23:13.9387 Info Configured from an XML element in D:\Mykhailo_Kovalchuk\Game Store\Domain\WebApi\bin\Debug\netcoreapp2.1\nlog.config...
+2018-09-25 17:23:13.9764 Info Found 45 configuration items
+2018-09-25 17:30:37.7484 Info Message Template Auto Format enabled
+2018-09-25 17:30:37.8143 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-25 17:30:38.0061 Info Adding target File Target[allfile]
+2018-09-25 17:30:38.0172 Info Adding target File Target[ownFile-web]
+2018-09-25 17:30:38.0172 Info Configured from an XML element in D:\Mykhailo_Kovalchuk\Game Store\Domain\WebApi\bin\Debug\netcoreapp2.1\nlog.config...
+2018-09-25 17:30:38.0390 Info Found 45 configuration items
+2018-09-25 17:36:29.1616 Info Message Template Auto Format enabled
+2018-09-25 17:36:29.1750 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-25 17:36:29.3317 Info Adding target File Target[allfile]
+2018-09-25 17:36:29.3574 Info Adding target File Target[ownFile-web]
+2018-09-25 17:36:29.3574 Info Configured from an XML element in D:\Mykhailo_Kovalchuk\Game Store\Domain\WebApi\bin\Debug\netcoreapp2.1\nlog.config...
+2018-09-25 17:36:29.3790 Info Found 45 configuration items
+2018-09-25 17:41:47.9041 Info Message Template Auto Format enabled
+2018-09-25 17:41:47.9195 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-25 17:41:47.9974 Info Adding target File Target[allfile]
+2018-09-25 17:41:48.0561 Info Adding target File Target[ownFile-web]
+2018-09-25 17:41:48.0751 Info Configured from an XML element in D:\Mykhailo_Kovalchuk\Game Store\Domain\WebApi\bin\Debug\netcoreapp2.1\nlog.config...
+2018-09-25 17:41:48.1230 Info Found 45 configuration items
+2018-09-25 17:42:35.8127 Info Message Template Auto Format enabled
+2018-09-25 17:42:35.8329 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-25 17:42:36.0526 Info Adding target File Target[allfile]
+2018-09-25 17:42:36.0701 Info Adding target File Target[ownFile-web]
+2018-09-25 17:42:36.0701 Info Configured from an XML element in D:\Mykhailo_Kovalchuk\Game Store\Domain\WebApi\bin\Debug\netcoreapp2.1\nlog.config...
+2018-09-25 17:42:36.0945 Info Found 45 configuration items
+2018-09-25 17:48:08.3410 Info Message Template Auto Format enabled
+2018-09-25 17:48:08.3561 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-25 17:48:08.5229 Info Adding target File Target[allfile]
+2018-09-25 17:48:08.5989 Info Adding target File Target[ownFile-web]
+2018-09-25 17:48:08.6141 Info Configured from an XML element in D:\Mykhailo_Kovalchuk\Game Store\Domain\WebApi\bin\Debug\netcoreapp2.1\nlog.config...
+2018-09-25 17:48:08.6389 Info Found 45 configuration items
+2018-09-25 17:53:43.6228 Info Message Template Auto Format enabled
+2018-09-25 17:53:43.6348 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-25 17:53:43.7486 Info Adding target File Target[allfile]
+2018-09-25 17:53:43.7585 Info Adding target File Target[ownFile-web]
+2018-09-25 17:53:43.8529 Error Parsing configuration from D:\Mykhailo_Kovalchuk\Game Store\Domain\WebApi\bin\Debug\netcoreapp2.1\nlog.config failed. Exception: NLog.NLogConfigurationException: Exception when parsing D:\Mykhailo_Kovalchuk\Game Store\Domain\WebApi\bin\Debug\netcoreapp2.1\nlog.config.  ---> NLog.NLogConfigurationException: Target jsonFile not found.
+   at NLog.Config.XmlLoggingConfiguration.ParseLoggerElement(NLogXmlElement loggerElement, IList`1 rulesCollection)
+   at NLog.Config.XmlLoggingConfiguration.ParseRulesElement(NLogXmlElement rulesElement, IList`1 rulesCollection)
+   at NLog.Config.XmlLoggingConfiguration.ParseNLogElement(NLogXmlElement nlogElement, String filePath, Boolean autoReloadDefault)
+   at NLog.Config.XmlLoggingConfiguration.Initialize(XmlReader reader, String fileName, Boolean ignoreErrors)
+   --- End of inner exception stack trace ---
+2018-09-25 17:53:43.8529 Warn Failed loading config from D:\Mykhailo_Kovalchuk\Game Store\Domain\WebApi\bin\Debug\netcoreapp2.1\nlog.config. Invalid XML?
+2018-09-25 17:53:43.8655 Info Found 42 configuration items

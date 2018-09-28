@@ -16,7 +16,7 @@ namespace WebApi.Configuration
             Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<CreateCommentModel, CreateAnswerCommentDto>()
-                .ForMember(p => p.AnswerId, opt => opt.Ignore());
+                .ForMember(p => p.ParentCommentId, opt => opt.Ignore());
 
                 cfg.CreateMap<PublisherCreateModel, EditPublisherDto>()
                             .ForPath(p => p.Id, opt => opt.Ignore());

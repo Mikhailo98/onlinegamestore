@@ -4,12 +4,14 @@ using BusinessLogicLayer.Interfaces;
 using Domain;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
+[assembly: InternalsVisibleTo("BusinessLogicLayer.Test")]
 namespace BusinessLogicLayer.Services
 {
-    class CommentService : ICommentService
+    internal class CommentService : ICommentService
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
@@ -21,11 +23,12 @@ namespace BusinessLogicLayer.Services
 
         }
 
-        public async Task AddComment(CreateAnswerCommentDto comment)
+
+        public async Task AnswerOnComment(CreateAnswerCommentDto comment)
         {
             using (unitOfWork)
             {
-                var commentOnAnswer = unitOfWork.CommentRepository.GetSingleAsync(c => c.Id == comment.GameId);
+                var commentOnAnswer = unitOfWork.CommentRepository.GetSingleAsync(c => c.Id == comment.ParentCommentId);
                 var game = unitOfWork.GameRepository.GetSingleAsync(c => c.Id == comment.GameId);
 
                 if (await commentOnAnswer == null)
@@ -41,13 +44,14 @@ namespace BusinessLogicLayer.Services
 
                 unitOfWork.CommentRepository.Create(new Comment()
                 {
-                    Body = comment.Body,
-                    Answer = await commentOnAnswer,
-                    Game = await game,
+                    Name = commentOnAnswer.Result.
+                    Body = $"{commentOnAnswer.Result.Name}, " + comment.Body,
+                    ParentComment = commentOnAnswer.Result,
+                    Game = game.Result,
                 });
 
                 await unitOfWork.CommitAsync();
-                            }
+            }
         }
     }
 }

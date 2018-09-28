@@ -29,29 +29,18 @@ namespace WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            try
-            {
-                return Ok(await genreService.GetAll());
 
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(400, ex.Message);
-            }
+            return StatusCode(200, await genreService.GetAll());
+            
         }
 
         [HttpGet("{id}/games")]
         public async Task<IActionResult> GetAllCommentsbyGameKey(int id)
         {
-            try
-            {
-                List<GameDto> commentDtos = await genreService.GetGamesOfGenre(id);
-                return Ok(commentDtos);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(400, ex.Message);
-            }
+
+            List<GameDto> commentDtos = await genreService.GetGamesOfGenre(id);
+            return StatusCode(200, commentDtos);
+
         }
 
 
@@ -64,16 +53,9 @@ namespace WebApi.Controllers
             {
                 return StatusCode(400, "Invalid Genre Id");
             }
+            var genre = await genreService.GetInfo(id);
+            return StatusCode(200, genre);
 
-            try
-            {
-                var genre = await genreService.GetInfo(id);
-                return StatusCode(200, genre);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(400, ex.Message);
-            }
 
         }
 
@@ -95,8 +77,6 @@ namespace WebApi.Controllers
             };
 
             await genreService.EditGenre(genreDto);
-
-
             return StatusCode(204);
         }
 
@@ -114,17 +94,9 @@ namespace WebApi.Controllers
                 Name = value.Name,
                 HeadGenreId = value.HeadGenre
             };
-            try
-            {
-                await genreService.AddGenre(genre);
-                return StatusCode(201, "Genre was added!");
-            }
-            catch (Exception ex)
-            {
 
-                return StatusCode(400, ex.Message);
-            }
-
+            await genreService.AddGenre(genre);
+            return StatusCode(201, "Genre was added!");
         }
 
 
@@ -132,16 +104,8 @@ namespace WebApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            try
-            {
-                await genreService.DeleteGenre(id);
-                return StatusCode(204, "Genre was deleted");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(400, ex.Message);
-            }
-
+            await genreService.DeleteGenre(id);
+            return StatusCode(204, "Genre was deleted");
         }
     }
 }
