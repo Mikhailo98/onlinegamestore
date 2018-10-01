@@ -10,6 +10,7 @@ using WebApi.Models;
 using BusinessLogicLayer.Dtos;
 using AutoMapper;
 
+
 namespace WebApi.Controllers
 {
     [Route("api/comments")]
@@ -32,7 +33,9 @@ namespace WebApi.Controllers
                 return StatusCode(400, "Invalid comment id");
             }
 
-            if (!ModelState.IsValid)
+
+            bool m = ModelState.IsValid;
+            if (m == false)
             {
                 return StatusCode(400, ModelState);
             }
@@ -41,15 +44,13 @@ namespace WebApi.Controllers
             {
                 ParentCommentId = id,
                 Body = comment.Body,
-                GameId = comment.GameId,
+                GameId = comment.GameId.Value,
                 Name = comment.Name
             };
 
             await commnetService.AnswerOnComment(commentDto);
 
             return StatusCode(201, "Comment was created");
-
-
         }
 
     }

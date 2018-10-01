@@ -115,8 +115,8 @@ namespace BusinessLogicLayer.Services
         {
             using (unitOfWork)
             {
-                var genreEntity = await unitOfWork.GenreRepository.GetAsync();
-                var genres = mapper.Map<List<GenreDto>>(genreEntity);
+                var genreEntities = await unitOfWork.GenreRepository.GetAsync();
+                var genres = mapper.Map<List<GenreDto>>(genreEntities);
                 return genres;
             }
         }
@@ -130,6 +130,7 @@ namespace BusinessLogicLayer.Services
                 {
                     throw new ArgumentException("Invalid Genre Id");
                 }
+
 
                 var genreDto = mapper.Map<GenreDto>(genreEntity);
 

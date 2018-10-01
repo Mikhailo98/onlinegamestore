@@ -13,7 +13,7 @@ namespace BusinessLogicLayer.Configuration
             // builder.RegisterAssemblyTypes(this.GetType().Assembly).AsImplementedInterfaces();
 
             builder.RegisterType<CommentService>().As<ICommentService>();
-            builder.RegisterType<GamePlatformService>().As<IGamePlatformService>();
+         //   builder.RegisterType<GamePlatformService>().As<IGamePlatformService>();
             builder.RegisterType<GameService>().As<IGameService>();
             builder.RegisterType<GenreService>().As<IGenreService>();
             builder.RegisterType<PublisherService>().As<IPublisherService>();

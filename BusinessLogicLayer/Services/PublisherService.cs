@@ -31,9 +31,9 @@ namespace BusinessLogicLayer.Services
             using (unitOfWork)
             {
                 var publisher = unitOfWork.PublisherRepository.GetSingleAsync(p => p.Name == newPublisher.Name);
-                if (publisher != null)
+                if (await publisher != null)
                 {
-                    throw new ArgumentNullException("Publisher with such Name already exists");
+                    throw new ArgumentException("Publisher with such Name already exists");
                 }
 
                 unitOfWork.PublisherRepository.Create(new Publisher() { Name = newPublisher.Name });
@@ -51,11 +51,11 @@ namespace BusinessLogicLayer.Services
                 {
                     throw new ArgumentException("Invalid publisher Id");
                 }
+
                 publisher = mapper.Map(genreDto, publisher);
 
                 unitOfWork.PublisherRepository.Update(publisher);
                 await unitOfWork.CommitAsync();
-
             }
         }
 
@@ -73,8 +73,8 @@ namespace BusinessLogicLayer.Services
         {
             using (unitOfWork)
             {
-                var publisherEntity = await unitOfWork.GameRepository.GetAsync(p => p.PublisherId == id);
-                var dto = mapper.Map<List<GameDto>>(publisherEntity);
+                var gamesEnteties = await unitOfWork.GameRepository.GetAsync(p => p.PublisherId == id);
+                var dto = mapper.Map<List<GameDto>>(gamesEnteties);
                 return dto;
             }
         }

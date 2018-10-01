@@ -1,38 +1,28 @@
-﻿using Autofac;
-using Autofac.Extensions.DependencyInjection;
-using AutoFixture;
+﻿using AutoFixture;
 using AutoMapper;
-using BusinessLogicLayer.Configuration;
 using BusinessLogicLayer.Dtos;
 using BusinessLogicLayer.Interfaces;
 using BusinessLogicLayer.Services;
-
 using Domain;
 using Domain.Repository;
 using Moq;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogicLayer.Test
+namespace BusinessLogicLayer.Tests
 {
     [TestFixture]
     public class CommentServiceTest
     {
-
-
         private Mock<IUnitOfWork> unitofworkMoq;
         private Mock<IMapper> mapperMoq;
         private Mock<IRepository<Game>> gameRepositoryMoq;
         private Mock<IRepository<Comment>> commentRepositoryMoq;
 
-        ICommentService service;//= new GameService(unitofworkMoq.Object, Mapper.Instance);
-
-
+        ICommentService service;
         Fixture fixture = new Fixture();
 
         public CommentServiceTest()
@@ -66,7 +56,7 @@ namespace BusinessLogicLayer.Test
 
 
         [Test]
-        public void AnswerOnComment_()
+        public void AnswerOnComment_ValidMethodParameter_True()
         {
 
             //assing
@@ -97,7 +87,7 @@ namespace BusinessLogicLayer.Test
         }
 
         [Test]
-        public void AnswerOnComment__Game_id_isnot_valid()
+        public void AnswerOnComment_InValidGameId_ThrowsArgumentException()
         {
 
             //assing
@@ -124,7 +114,7 @@ namespace BusinessLogicLayer.Test
 
 
         [Test]
-        public void AnswerOnComment_Comment_id_isnot_valid()
+        public void AnswerOnComment_InvalidParentCommentId_ThrowsArgumentException()
         {
 
             //assing
@@ -150,7 +140,7 @@ namespace BusinessLogicLayer.Test
         }
 
         [Test]
-        public void AnswerOnComment_CreateAnswerCommentDto_null()
+        public void AnswerOnComment_MethodParameterIsNull_ThrowsArgumetnException()
         {
 
             //assing

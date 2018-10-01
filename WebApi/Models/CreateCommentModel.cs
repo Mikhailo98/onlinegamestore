@@ -13,7 +13,7 @@ namespace WebApi.Models
         public string Body { get; set; }
 
         [Required]
-        public int GameId { get; set; }
+        public int? GameId { get; set; }
 
         [Required]
         public string Name { get;  set; }

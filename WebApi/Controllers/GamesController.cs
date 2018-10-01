@@ -186,7 +186,6 @@ namespace WebApi.Controllers
                 return StatusCode(400, "Invalid game id");
             }
 
-
             await gameService.CommentGame(new CreateCommentDto() { Body = comment, GameId = id });
             return StatusCode(201, "Comment was added");
 
