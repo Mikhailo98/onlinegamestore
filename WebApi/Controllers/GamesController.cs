@@ -160,7 +160,7 @@ namespace WebApi.Controllers
         [HttpPost("{id:int:min(1)}/comments")]
         public async Task<IActionResult> MakeComment(int id, [FromBody]CreateCommentModel comment)
         {
-         
+
             CreateCommentDto create = new CreateCommentDto()
             {
                 Body = comment.Body,
@@ -169,12 +169,8 @@ namespace WebApi.Controllers
             };
 
             await gameService.CommentGame(create);
-            return StatusCode(201, "Comment was added");
+            return StatusCode(400, "Invalid game id");
         }
-
-
-
-
 
     }
 }

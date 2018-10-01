@@ -16,9 +16,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using WebApi.Test.Unit_Of_Work;
 
-namespace BusinessLogicLayer.Test
+namespace BusinessLogicLayer.Test.GameServiceTest
 { 
 
     [TestFixture]

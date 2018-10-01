@@ -11,6 +11,7 @@ using BusinessLogicLayer.Dtos;
 using AutoMapper;
 using WebApi.Infrastucture;
 
+
 namespace WebApi.Controllers
 {
     [Route("api/comments")]
@@ -24,6 +25,7 @@ namespace WebApi.Controllers
             this.commnetService = gameService;
             this.mapper = mapper;
         }
+
 
         [CustomValidation]
         [HttpPost("{id:int:min(1)}/comments")]
@@ -39,8 +41,6 @@ namespace WebApi.Controllers
 
             await commnetService.AnswerOnComment(commentDto);
             return StatusCode(201, "Comment was created");
-
-
         }
 
     }
