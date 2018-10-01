@@ -15,13 +15,13 @@ namespace WebApi.Configuration
         {
             Mapper.Initialize(cfg =>
             {
-                cfg.CreateMap<CreateCommentModel, CreateAnswerCommentDto>()
+                cfg.CreateMap<CreateAnswerModel, CreateAnswerCommentDto>()
                 .ForMember(p => p.ParentCommentId, opt => opt.Ignore());
 
                 cfg.CreateMap<PublisherCreateModel, EditPublisherDto>()
                             .ForPath(p => p.Id, opt => opt.Ignore());
 
-                cfg.CreateMap<CreateAnswerCommentDto, CreateCommentModel>();
+                cfg.CreateMap<CreateAnswerCommentDto, CreateAnswerModel>();
 
                 cfg.AddProfile(new BusinessLogicLayer.Configuration.AutoMapperConfig());
             });

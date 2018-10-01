@@ -19,7 +19,7 @@ namespace WebApi
             var logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
             try
             {
-                logger.Debug("init main");
+                logger.Trace("main Initialized");
 
                 CreateWebHostBuilder(args)
                     .ConfigureServices(services => services.AddAutofac())

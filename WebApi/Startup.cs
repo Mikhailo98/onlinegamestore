@@ -42,13 +42,8 @@ namespace WebApi
             services.AddAutoMapper();
 
             var builder = new ContainerBuilder();
-            // builder.RegisterType<IMapper>().As<Configuration.AutoMapperConfig>().InstancePerLifetimeScope();
             builder.RegisterModule(new DependencyServiceModule());
             builder.RegisterModule(new AutoMapperModule());
-
-            //builder.RegisterModule(new AutoMapperModule());
-            //builder.Register(c => c.Resolve<MapperConfiguration>().CreateMapper(c.Resolve)).As<IMapper>().InstancePerLifetimeScope();
-
             builder.Populate(services);
             var container = builder.Build();
 
@@ -61,14 +56,12 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            // loggerFactory.AddConsole();
 
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            //   loggerFactory.AddNLog();
 
 
 
@@ -83,7 +76,7 @@ namespace WebApi
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
 
-            app.UseMiddleware<HttpStatusCodeExceptionMiddleware>();
+            app.UseMiddleware<CustomErrorMiddleware>();
 
             app.UseMvc();
 

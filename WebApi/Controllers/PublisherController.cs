@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebApi.Infrastucture;
 using WebApi.Models;
 
 namespace WebApi.Controllers
@@ -34,57 +35,37 @@ namespace WebApi.Controllers
         }
 
 
-        [HttpGet("{id}/games")]
+        [HttpGet("{id:int:min(1)}/games")]
         public async Task<IActionResult> GetAllGamesOfPublisher(int id)
         {
             List<GameDto> commentDtos = await publisherService.GetGamesOfPublisher(id);
-
             return StatusCode(200, commentDtos);
 
         }
 
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int:min(1)}")]
         public async Task<IActionResult> Get(int id)
         {
-
-            if (id <= 0)
-            {
-                return StatusCode(400, "Invalid Publisher Id");
-            }
-
-
             PublisherDto genre = await publisherService.GetInfo(id);
             return StatusCode(200, genre);
-
 
         }
 
         [HttpPost]
+        [CustomValidation]
         public async Task<IActionResult> CreatePublisherAsync([FromBody]PublisherCreateModel publisher)
         {
-
-            if (!ModelState.IsValid)
-            {
-                return StatusCode(400, ModelState);
-            }
-
-
             await publisherService.CreatePublisher(new CreatePublisherDto() { Name = publisher.Name });
-
-
             return StatusCode(201, "Publisher was added");
         }
 
 
-        [HttpPut("{id}")]
+
+        [HttpPut("{id:int:min(1)}")]
+        [CustomValidation]
         public async Task<IActionResult> Put(int id, [FromBody]PublisherCreateModel value)
         {
-            if (!ModelState.IsValid)
-            {
-                return StatusCode(400, ModelState);
-            }
-
             EditPublisherDto editedPubliisher = new EditPublisherDto()
             {
                 Id = id,
@@ -92,7 +73,6 @@ namespace WebApi.Controllers
             };
 
             await publisherService.EditPublisher(editedPubliisher);
-
             return StatusCode(200, "Publisher was updated");
         }
 

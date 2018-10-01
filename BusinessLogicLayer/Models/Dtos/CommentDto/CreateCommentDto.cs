@@ -9,5 +9,6 @@ namespace BusinessLogicLayer.Models.Dtos.CommentDto
         public string Body { get; set; }
 
         public int GameId { get; set; }
+        public string Name { get; set; }
     }
 }

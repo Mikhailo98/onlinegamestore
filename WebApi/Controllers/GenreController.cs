@@ -8,6 +8,7 @@ using BusinessLogicLayer.Interfaces;
 using BusinessLogicLayer.Models.Dtos.GenreDto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Infrastucture;
 using WebApi.Models;
 
 namespace WebApi.Controllers
@@ -29,15 +30,12 @@ namespace WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-
             return StatusCode(200, await genreService.GetAll());
-            
         }
 
-        [HttpGet("{id}/games")]
+        [HttpGet("{id:int:min(1)}/games")]
         public async Task<IActionResult> GetAllCommentsbyGameKey(int id)
         {
-
             List<GameDto> commentDtos = await genreService.GetGamesOfGenre(id);
             return StatusCode(200, commentDtos);
 
@@ -45,29 +43,18 @@ namespace WebApi.Controllers
 
 
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int:min(1)}")]
         public async Task<IActionResult> Get(int id)
         {
-
-            if (id <= 0)
-            {
-                return StatusCode(400, "Invalid Genre Id");
-            }
             var genre = await genreService.GetInfo(id);
             return StatusCode(200, genre);
-
-
         }
 
 
-        [HttpPut("{id}")]
+        [HttpPut("{id:int:min(1)}")]
+        [CustomValidation]
         public async Task<IActionResult> Put(int id, [FromBody]EditGenreModel value)
         {
-            if (!ModelState.IsValid)
-            {
-                return StatusCode(400, ModelState);
-
-            }
 
             EditGenreDto genreDto = new EditGenreDto()
             {
@@ -81,13 +68,9 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
+        [CustomValidation]
         public async Task<IActionResult> Post([FromBody]CreateGanreModel value)
         {
-
-            if (!ModelState.IsValid)
-            {
-                return StatusCode(400, ModelState);
-            }
 
             GenreCreateDto genre = new GenreCreateDto()
             {
@@ -101,7 +84,7 @@ namespace WebApi.Controllers
 
 
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int:min(1)}")]
         public async Task<IActionResult> Delete(int id)
         {
             await genreService.DeleteGenre(id);

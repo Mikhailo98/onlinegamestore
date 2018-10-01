@@ -9,6 +9,7 @@ using BusinessLogicLayer.Interfaces;
 using WebApi.Models;
 using BusinessLogicLayer.Dtos;
 using AutoMapper;
+using WebApi.Infrastucture;
 
 namespace WebApi.Controllers
 {
@@ -24,19 +25,10 @@ namespace WebApi.Controllers
             this.mapper = mapper;
         }
 
-        [HttpPost("{id}/comments")]
-        public async Task<IActionResult> CreateAnswerForAnotherComment(int id, [FromBody]CreateCommentModel comment)
-        {
-            if (id <= 0)
-            {
-                return StatusCode(400, "Invalid comment id");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return StatusCode(400, ModelState);
-            }
-
+        [CustomValidation]
+        [HttpPost("{id:int:min(1)}/comments")]
+        public async Task<IActionResult> CreateAnswerForAnotherComment(int id, [FromBody]CreateAnswerModel comment)
+        {                       
             var commentDto = new CreateAnswerCommentDto()
             {
                 ParentCommentId = id,
@@ -46,7 +38,6 @@ namespace WebApi.Controllers
             };
 
             await commnetService.AnswerOnComment(commentDto);
-
             return StatusCode(201, "Comment was created");
 
 

@@ -238,8 +238,9 @@ namespace BusinessLogicLayer.Services
 
                 unitOfWork.CommentRepository.Create(new Comment()
                 {
-                    Name = comment.Body,
-                    Game = gameEntity
+                    Name = comment.Name,
+                    Game = gameEntity,
+                    Body = comment.Body
                 });
 
                 await unitOfWork.CommitAsync();

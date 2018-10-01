@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Hosting;
 using BusinessLogicLayer.Models.Dtos.CommentDto;
 using Microsoft.Extensions.Logging;
 using WebApi.Infrastucture;
+using WebApi.Logging;
 
 namespace WebApi.Controllers
 {
@@ -30,7 +31,8 @@ namespace WebApi.Controllers
 
 
         public GamesController(IGameService gameService,
-            IMapper mapper, IHostingEnvironment appEnvironment, ILogger<GamesController> logger)
+            IMapper mapper, IHostingEnvironment appEnvironment,
+            ILogger<GamesController> logger)
         {
             this.gameService = gameService;
             this.mapper = mapper;
@@ -43,23 +45,28 @@ namespace WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            List<GameDto> games = await gameService.GetAll();
 
-            return StatusCode(200, games);
-
+            using (new PerformanceLogger(_logger, $"{nameof(GetAll)} Method in {nameof(GamesController)}"))
+            {
+                List<GameDto> games = await gameService.GetAll();
+                return StatusCode(200, games);
+            }
         }
 
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int:min(1)}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var game = await gameService.GetInfo(id);
-            return StatusCode(200, game);
 
+            using (new PerformanceLogger(_logger, $"{nameof(GetById)} Method in {nameof(GamesController)}"))
+            {
+                var game = await gameService.GetInfo(id);
+                return StatusCode(200, game);
+            }
 
         }
 
-        [HttpGet("{id}/comments")]
+        [HttpGet("{id:int:min(1)}/comments")]
         public async Task<IActionResult> GetAllComment(int id)
         {
 
@@ -75,11 +82,9 @@ namespace WebApi.Controllers
         }
 
 
-        [HttpGet("{id}/genres")]
+        [HttpGet("{id:int:min(1)}/genres")]
         public async Task<IActionResult> GetGenresByGameKey(int id)
         {
-            _logger.LogWarning("Index page says hello");
-
 
             List<GenreDto> commentDtos = await gameService.GetGenres(id);
             return StatusCode(200, commentDtos);
@@ -87,12 +92,10 @@ namespace WebApi.Controllers
         }
 
 
-        [HttpGet("{id}/download")]
+        [HttpGet("{id:int:min(1)}/download")]
         public async Task<IActionResult> Download(int id)
         {
-
             string localpath = await gameService.GetGameLocalPath(id);
-
             string filePath = Path.Combine(appEnvironment.ContentRootPath, localpath);
             string fileType = "application/pdf";
             string fileName = "book.pdf";
@@ -101,8 +104,8 @@ namespace WebApi.Controllers
         }
 
 
-
-        [HttpPut("{id}")]
+        [HttpPut("{id:int:min(1)}")]
+        [CustomValidation]
         public async Task<IActionResult> EditGame(int id, [FromBody]GameCreateModel game)
         {
 
@@ -128,13 +131,6 @@ namespace WebApi.Controllers
         public async Task<IActionResult> CreateGame([FromBody]GameCreateModel game)
         {
 
-            if (!ModelState.IsValid)
-            {
-                return StatusCode(400, ModelState);
-            }
-
-
-
             CreateGameDto createdGame = new CreateGameDto()
             {
                 Name = game.Name,
@@ -144,31 +140,15 @@ namespace WebApi.Controllers
                 Platforms = game.Platforms,
             };
 
-
-
             await gameService.AddGame(createdGame);
-
-
-
             return StatusCode(201, "Game was added");
         }
 
 
 
-
-
-
-
-        [HttpDelete("{id:int}")]
+        [HttpDelete("{id:int:min(1)}")]
         public async Task<IActionResult> DeleteById(int id)
         {
-
-            if (id <= 0)
-            {
-                return StatusCode(400, "Invalid image id");
-            }
-
-
             await gameService.DeleteGame(id);
             return StatusCode(204, "Game was successfully deleted ");
 
@@ -176,21 +156,20 @@ namespace WebApi.Controllers
         }
 
 
-
-        [HttpPost("{id}/comments")]
-        public async Task<IActionResult> MakeComment(int id, [FromBody]string comment)
+        [CustomValidation]
+        [HttpPost("{id:int:min(1)}/comments")]
+        public async Task<IActionResult> MakeComment(int id, [FromBody]CreateCommentModel comment)
         {
-
-            if (id <= 0)
+         
+            CreateCommentDto create = new CreateCommentDto()
             {
-                return StatusCode(400, "Invalid game id");
-            }
+                Body = comment.Body,
+                GameId = id,
+                Name = comment.Name
+            };
 
-
-            await gameService.CommentGame(new CreateCommentDto() { Body = comment, GameId = id });
+            await gameService.CommentGame(create);
             return StatusCode(201, "Comment was added");
-
-
         }
 
 

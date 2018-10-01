@@ -11,14 +11,14 @@ using WebApi.Filter;
 
 namespace WebApi.Middleware
 {
-    public class HttpStatusCodeExceptionMiddleware
+    public class CustomErrorMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly ILogger<HttpStatusCodeExceptionMiddleware> _logger;
+        private readonly ILogger<CustomErrorMiddleware> _logger;
 
 
 
-        public HttpStatusCodeExceptionMiddleware(RequestDelegate next, ILogger<HttpStatusCodeExceptionMiddleware> loggerFactory)
+        public CustomErrorMiddleware(RequestDelegate next, ILogger<CustomErrorMiddleware> loggerFactory)
         {
             _next = next ?? throw new ArgumentNullException(nameof(next));
             _logger = loggerFactory;
@@ -28,9 +28,6 @@ namespace WebApi.Middleware
         public async Task InvokeAsync(HttpContext context)
         {
             HttpStatusCode code;
-            string message;
-            dynamic details;
-
 
             try
             {
