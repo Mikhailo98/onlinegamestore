@@ -19,6 +19,8 @@ using Autofac.Extensions.DependencyInjection;
 using WebApi.Configuration;
 using WebApi.Middleware;
 using NLog.Extensions.Logging;
+using WebApi.Logging;
+using WebApi.Filter;
 
 namespace WebApi
 {
@@ -36,6 +38,8 @@ namespace WebApi
             {
                 c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
             });
+
+            services.AddScoped<PerformanceLoggingAttribute>();
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
@@ -61,6 +65,8 @@ namespace WebApi
             {
                 app.UseDeveloperExceptionPage();
             }
+
+         
 
 
 

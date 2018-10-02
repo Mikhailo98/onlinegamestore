@@ -9,13 +9,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Autofac.Extensions.DependencyInjection;
 using NLog.Web;
+using WebApi.Logging;
 
 namespace WebApi
 {
     public class Program
     {
         public static void Main(string[] args)
-        {
+      {
             var logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
             try
             {
@@ -25,8 +26,10 @@ namespace WebApi
                     .ConfigureServices(services => services.AddAutofac())
                     .ConfigureLogging(logging =>
                     {
-                        logging.ClearProviders();
-                        logging.SetMinimumLevel(LogLevel.Trace);
+                        ApplicationLogging.ConfigureLogger(logging);
+
+                        //logging.ClearProviders();
+                        //logging.SetMinimumLevel(LogLevel.Trace);
                     })
                     .UseNLog()
                     .Build().Run();
