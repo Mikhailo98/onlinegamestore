@@ -10,7 +10,7 @@ using WebApi.Models;
 using BusinessLogicLayer.Dtos;
 using AutoMapper;
 using WebApi.Infrastucture;
-
+using System.Net;
 
 namespace WebApi.Controllers
 {
@@ -40,7 +40,7 @@ namespace WebApi.Controllers
             };
 
             await commnetService.AnswerOnComment(commentDto);
-            return StatusCode(201, "Comment was created");
+            return StatusCode((int)HttpStatusCode.Created, "Comment was created");
         }
 
     }

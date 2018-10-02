@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using BusinessLogicLayer.Dtos;
@@ -37,7 +38,7 @@ namespace WebApi.Controllers
         public async Task<IActionResult> GetAllCommentsbyGameKey(int id)
         {
             List<GameDto> commentDtos = await genreService.GetGamesOfGenre(id);
-            return StatusCode(200, commentDtos);
+            return StatusCode((int)HttpStatusCode.OK, commentDtos);
 
         }
 
@@ -47,7 +48,7 @@ namespace WebApi.Controllers
         public async Task<IActionResult> Get(int id)
         {
             var genre = await genreService.GetInfo(id);
-            return StatusCode(200, genre);
+            return StatusCode((int)HttpStatusCode.OK, genre);
         }
 
 
@@ -64,7 +65,7 @@ namespace WebApi.Controllers
             };
 
             await genreService.EditGenre(genreDto);
-            return StatusCode(204);
+            return StatusCode((int)HttpStatusCode.NoContent);
         }
 
         [HttpPost]
@@ -79,7 +80,7 @@ namespace WebApi.Controllers
             };
 
             await genreService.AddGenre(genre);
-            return StatusCode(201, "Genre was added!");
+            return StatusCode((int)HttpStatusCode.Created, "Genre was added!");
         }
 
 

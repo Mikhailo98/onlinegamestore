@@ -17,6 +17,7 @@ using Microsoft.Extensions.Logging;
 using WebApi.Infrastucture;
 using WebApi.Logging;
 using WebApi.Filter;
+using System.Net;
 
 namespace WebApi.Controllers
 {
@@ -44,50 +45,36 @@ namespace WebApi.Controllers
 
 
         [HttpGet]
-        [ServiceFilter(typeof(PerformanceLoggingAttribute))]
+        [ServiceFilter(typeof(PerformanceLogging))]
         public async Task<IActionResult> GetAll()
         {
             List<GameDto> games = await gameService.GetAll();
             return StatusCode(200, games);
-
         }
 
 
         [HttpGet("{id:int:min(1)}")]
         public async Task<IActionResult> GetById(int id)
         {
-
-   
-                var game = await gameService.GetInfo(id);
-                return StatusCode(200, game);
- 
+            var game = await gameService.GetInfo(id);
+            return StatusCode((int)HttpStatusCode.OK, game);
 
         }
 
         [HttpGet("{id:int:min(1)}/comments")]
-        [ServiceFilter(typeof(PerformanceLoggingAttribute))]
+        [ServiceFilter(typeof(PerformanceLogging))]
         public async Task<IActionResult> GetAllComment(int id)
         {
-
-            if (id <= 0)
-            {
-                return StatusCode(400, "Invalid game id");
-            }
-
             var comments = await gameService.GetAllComments(id);
-            return Ok(comments);
-
-
+            return StatusCode((int)HttpStatusCode.OK, comments);
         }
 
 
         [HttpGet("{id:int:min(1)}/genres")]
         public async Task<IActionResult> GetGenresByGameKey(int id)
         {
-
-            List<GenreDto> commentDtos = await gameService.GetGenres(id);
-            return StatusCode(200, commentDtos);
-
+            List<GenreDto> genres = await gameService.GetGenres(id);
+            return StatusCode((int)HttpStatusCode.OK, genres);
         }
 
 
@@ -120,7 +107,7 @@ namespace WebApi.Controllers
 
             await gameService.EditGame(dto);
 
-            return StatusCode(204);
+            return StatusCode((int)HttpStatusCode.NoContent);
         }
 
 
@@ -140,7 +127,7 @@ namespace WebApi.Controllers
             };
 
             await gameService.AddGame(createdGame);
-            return StatusCode(201, "Game was added");
+            return StatusCode((int)HttpStatusCode.Created, "Game was added");
         }
 
 
@@ -149,7 +136,7 @@ namespace WebApi.Controllers
         public async Task<IActionResult> DeleteById(int id)
         {
             await gameService.DeleteGame(id);
-            return StatusCode(204, "Game was successfully deleted ");
+            return StatusCode((int)HttpStatusCode.NoContent, "Game was successfully deleted ");
 
 
         }
@@ -168,7 +155,7 @@ namespace WebApi.Controllers
             };
 
             await gameService.CommentGame(create);
-            return StatusCode(400, "Invalid game id");
+            return StatusCode((int)HttpStatusCode.Created, "Comment was created");
         }
 
     }

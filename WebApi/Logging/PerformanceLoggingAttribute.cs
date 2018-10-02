@@ -1,27 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
-using System.ComponentModel.DataAnnotations;
-using System.Reflection;
-using Microsoft.AspNetCore.Routing;
 
-namespace WebApi.Filter
+namespace WebApi.Logging
 {
-
-    public class PerformanceLoggingAttribute : IActionFilter
+    public class PerformanceLogging : Attribute, IActionFilter
     {
 
-        private readonly ILogger<PerformanceLoggingAttribute> logger;
+        private readonly ILogger<PerformanceLogging> logger;
         private readonly Stopwatch timer;
 
-        public PerformanceLoggingAttribute(ILogger<PerformanceLoggingAttribute> logger)
+        public PerformanceLogging(ILogger<PerformanceLogging> logger)
         {
             timer = new Stopwatch();
             this.logger = logger;
+        }
+        
+        public void OnActionExecuting(ActionExecutingContext context)
+        {
+            timer.Start();
         }
 
         public void OnActionExecuted(ActionExecutedContext context)
@@ -35,12 +33,6 @@ namespace WebApi.Filter
             logger.LogTrace(
                 string.Format($"controller: {controllerName}, action: {actionName}" +
                 $"- Elapsed Milliseconds: {ms}"));
-        }
-
-
-        public void OnActionExecuting(ActionExecutingContext context)
-        {
-            timer.Start();
         }
     }
 }

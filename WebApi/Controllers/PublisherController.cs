@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using WebApi.Infrastucture;
 using WebApi.Models;
@@ -29,8 +30,8 @@ namespace WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            List<PublisherDto> dto = await publisherService.GetAll();
-            return Ok(dto);
+            List<PublisherDto> publishers = await publisherService.GetAll();
+            return StatusCode((int)HttpStatusCode.OK, publishers);
 
         }
 
@@ -39,7 +40,7 @@ namespace WebApi.Controllers
         public async Task<IActionResult> GetAllGamesOfPublisher(int id)
         {
             List<GameDto> commentDtos = await publisherService.GetGamesOfPublisher(id);
-            return StatusCode(200, commentDtos);
+            return StatusCode((int)HttpStatusCode.OK, commentDtos);
 
         }
 
@@ -48,7 +49,7 @@ namespace WebApi.Controllers
         public async Task<IActionResult> Get(int id)
         {
             PublisherDto genre = await publisherService.GetInfo(id);
-            return StatusCode(200, genre);
+            return StatusCode((int)HttpStatusCode.OK, genre);
 
         }
 
@@ -57,7 +58,7 @@ namespace WebApi.Controllers
         public async Task<IActionResult> CreatePublisherAsync([FromBody]PublisherCreateModel publisher)
         {
             await publisherService.CreatePublisher(new CreatePublisherDto() { Name = publisher.Name });
-            return StatusCode(201, "Publisher was added");
+            return StatusCode((int)HttpStatusCode.Created, "Publisher was added");
         }
 
 
@@ -73,7 +74,7 @@ namespace WebApi.Controllers
             };
 
             await publisherService.EditPublisher(editedPubliisher);
-            return StatusCode(200, "Publisher was updated");
+            return StatusCode((int)HttpStatusCode.OK, "Publisher was updated");
         }
 
     }

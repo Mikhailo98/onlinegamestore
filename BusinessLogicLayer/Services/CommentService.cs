@@ -20,7 +20,6 @@ namespace BusinessLogicLayer.Services
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
-
         }
 
 

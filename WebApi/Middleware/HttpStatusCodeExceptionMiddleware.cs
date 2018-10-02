@@ -58,7 +58,7 @@ namespace WebApi.Middleware
             }
             catch (Exception ex)
             {
-                code = HttpStatusCode.InternalServerError;
+                code = HttpStatusCode.BadRequest;
 
 
                 _logger.LogCritical(ex,

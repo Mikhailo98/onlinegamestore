@@ -39,7 +39,7 @@ namespace WebApi
                 c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
             });
 
-            services.AddScoped<PerformanceLoggingAttribute>();
+            services.AddScoped<PerformanceLogging>();
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);

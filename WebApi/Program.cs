@@ -16,7 +16,7 @@ namespace WebApi
     public class Program
     {
         public static void Main(string[] args)
-      {
+        {
             var logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
             try
             {
@@ -26,10 +26,8 @@ namespace WebApi
                     .ConfigureServices(services => services.AddAutofac())
                     .ConfigureLogging(logging =>
                     {
-                        ApplicationLogging.ConfigureLogger(logging);
-
-                        //logging.ClearProviders();
-                        //logging.SetMinimumLevel(LogLevel.Trace);
+                        logging.ClearProviders();
+                        logging.SetMinimumLevel(LogLevel.Trace);
                     })
                     .UseNLog()
                     .Build().Run();
