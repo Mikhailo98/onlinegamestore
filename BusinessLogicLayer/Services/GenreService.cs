@@ -24,8 +24,6 @@ namespace BusinessLogicLayer.Services
         }
 
 
-
-
         public async Task AddGenre(GenreCreateDto genre)
         {
             using (unitOfWork)

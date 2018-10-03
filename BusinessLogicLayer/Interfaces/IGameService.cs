@@ -2,6 +2,7 @@
 using BusinessLogicLayer.Models;
 using BusinessLogicLayer.Models.Dtos.CommentDto;
 using BusinessLogicLayer.Models.Dtos.GameDto;
+using BusinessLogicLayer.Pagination;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -20,5 +21,10 @@ namespace BusinessLogicLayer.Interfaces
         Task<List<GenreDto>> GetGenres(int id);
         Task CommentGame(CreateCommentDto comment);
         Task<string> GetGameLocalPath(int id);
+
+        Task<List<GameDto>> OrderedBy(PagingParamsBll paging);
+
     }
+
+
 }

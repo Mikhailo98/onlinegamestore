@@ -13,6 +13,9 @@ using BusinessLogicLayer.Models;
 using BusinessLogicLayer.Models.Dtos.GameDto;
 using BusinessLogicLayer.Models.Dtos.CommentDto;
 using System.Runtime.CompilerServices;
+using BusinessLogicLayer.Pagination;
+using System.Collections.Generic;
+
 
 [assembly: InternalsVisibleTo("BusinessLogicLayer.Test")]
 
@@ -179,7 +182,7 @@ namespace BusinessLogicLayer.Services
             {
                 var gameEntity = await unitOfWork.GameRepository
                     .GetSingleAsync(filter: g => g.Id == id);
-                
+
                 if (gameEntity == null)
                 {
                     throw new ArgumentException("Invalid game id");
@@ -256,6 +259,56 @@ namespace BusinessLogicLayer.Services
             }
 
             return "Files/book.pdf";
+        }
+
+
+
+
+
+        //TODO:
+        public async Task<List<GameDto>> OrderedBy(PagingParamsBll paging)
+        {
+
+            Func<IQueryable<Game>, IOrderedQueryable<Game>> orderby = (q) =>
+            {
+                IOrderedQueryable<Game> order;
+                q = q.Skip(paging.PageSize * (paging.PageNumber - 1)).Take(paging.PageSize);
+
+                switch (paging.DropdownList)
+                {
+                    case DropdownList.byPriceDesc:
+                        order = q.OrderByDescending(j => j.Price);
+                        break;
+                    case DropdownList.ByPriceAsc:
+                        order = q.OrderBy(j => j.Price);
+                        break;
+                    case DropdownList.MostCommented:
+                        order = q.OrderByDescending(j => j.Comments.Count);
+                        break;
+                    case DropdownList.mostViewed:
+                        order = q.OrderByDescending(j => j.Comments.Count);
+                        break;
+                    case DropdownList.New:
+                        order = q.OrderByDescending(j => j.AddedToStore.Date);
+                        break;
+                    default:
+                        order = null;
+                        break;
+                }
+                return order;
+            };
+
+            Expression<Func<Game, bool>> expression = p =>
+            p.GenreGames.All(g => paging.Genres.Contains(g.GenreId)) &&
+            p.GamePlatformTypes.All(g => paging.Platforms.Contains(g.PlatformTypeId)) &&
+            p.Price >= paging.MinPrice && p.Price <= paging.MaxPrice;
+
+
+            var result = await unitOfWork.GameRepository.GetAsync(expression, orderby);
+
+
+            return null;
+
         }
     }
 

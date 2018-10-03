@@ -12,9 +12,15 @@ namespace Domain
 
         public string Name { get; set; }
         public string Description { get; set; }
+        public decimal Price { get; set; }
 
         public int PublisherId { get; set; }
         public virtual Publisher Publisher { get; set; }
+
+        public DateTime AddedToStore { get; set; } = DateTime.Now;
+        
+        public DateTime PublishDate { get; set; }
+
 
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<GenreGame> GenreGames { get; set; }

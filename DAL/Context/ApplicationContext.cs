@@ -24,7 +24,7 @@ namespace DAL
         static ApplicationContext()
         {
 
-           //Initialize();
+            // Initialize();
         }
 
         public static void Initialize()
@@ -36,18 +36,90 @@ namespace DAL
                 ctx.Database.EnsureCreated();
 
                 var publisher1 = new Publisher { Name = "Blizzard" };
+                var publisher2 = new Publisher { Name = "Ubisoft" };
 
-                var game1 = new Game { Name = "StarCraft 2", Description = "An awesome game", Publisher = publisher1 };
+
+                var game1 = new Game
+                {
+                    Name = "StarCraft 2",
+                    Description = "An awesome game",
+                    Publisher = publisher1,
+                    PublishDate = new DateTime(2015, 7, 20),
+                    AddedToStore = DateTime.Now,
+                    Price = 123.50m
+
+                };
+
+                var game2 = new Game()
+                {
+                    Name = "Far Cry 5",
+                    Description = "An awesome game",
+                    Publisher = publisher2,
+                    PublishDate = new DateTime(2018, 7, 20),
+                    AddedToStore = DateTime.Now,
+                    Price = 55.50m
+
+                };
+
+                var game3 = new Game()
+                {
+                    Name = "Far Cry 4",
+                    Description = "An awesome game",
+                    Publisher = publisher2,
+                    PublishDate = new DateTime(2017, 7, 20),
+                    AddedToStore = DateTime.Now,
+                    Price = 44.40m
+
+
+                };
+                var game4 = new Game()
+                {
+                    Name = "Far Cry 3",
+                    Description = "An awesome game",
+                    Publisher = publisher2,
+                    PublishDate = new DateTime(2016, 7, 20),
+                    AddedToStore = DateTime.Now,
+                    Price = 33.30m
+
+                };
+                var game5 = new Game()
+                {
+                    Name = "Far Cry 2",
+                    Description = "An awesome game",
+                    Publisher = publisher2,
+                    PublishDate = new DateTime(2015, 7, 20),
+                    AddedToStore = DateTime.Now,
+                    Price = 22.50m
+
+                };
+
+
 
                 var genre1 = new Genre { Name = "Strategy" };
                 var genre2 = new Genre { Name = "RTS", HeadGenre = genre1 };
+                var genre3 = new Genre { Name = "First - person shooter" };
 
 
                 var gameGenre1 = new GenreGame() { Game = game1, Genre = genre1 };
                 var gameGenre2 = new GenreGame() { Game = game1, Genre = genre2 };
+                var gameGenre3 = new GenreGame() { Game = game2, Genre = genre3 };
+                var gameGenre4 = new GenreGame() { Game = game3, Genre = genre3 };
+                var gameGenre5 = new GenreGame() { Game = game4, Genre = genre3 };
+                var gameGenre6 = new GenreGame() { Game = game5, Genre = genre3 };
 
 
-                var platformtype1 = new PlatformType() { Type = "desktop" };
+                var platformtype1 = new PlatformType()
+                {
+                    Type = "desktop",
+                    GamePlatformtypes = new List<GamePlatformType>()
+                   {
+                       new GamePlatformType() { Game = game2 },
+                       new GamePlatformType() { Game = game3 },
+                       new GamePlatformType() { Game = game4 },
+                       new GamePlatformType() { Game = game5 },
+
+                   }
+                };
                 var platformtype2 = new PlatformType()
                 {
                     Type = "mobile",
@@ -73,21 +145,33 @@ namespace DAL
                    }
                 };
 
+                ctx.Add(gameGenre1);
+                ctx.Add(gameGenre2);
+                ctx.Add(gameGenre3);
+                ctx.Add(gameGenre4);
+                ctx.Add(gameGenre5);
+                ctx.Add(gameGenre6);
+
 
 
                 game1.GenreGames = new List<GenreGame> { gameGenre1, gameGenre2 };
 
                 ctx.Publishers.Add(publisher1);
+                ctx.Publishers.Add(publisher2);
 
                 ctx.Games.Add(game1);
+                ctx.Games.Add(game2);
+                ctx.Games.Add(game3);
+                ctx.Games.Add(game4);
+                ctx.Games.Add(game5);
 
                 ctx.Genres.Add(genre1);
                 ctx.Genres.Add(genre2);
+                ctx.Genres.Add(genre3);
 
                 var comment1 = new Comment() { Game = game1, Body = "First One" };
                 var comment2 = new Comment() { Game = game1, Body = "Second", ParentComment = comment1 };
                 var comment3 = new Comment() { Game = game1, Body = "Third", ParentComment = comment2 };
-
                 var comment22 = new Comment() { Game = game1, Body = "Third", ParentComment = comment1 };
 
 

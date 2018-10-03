@@ -18,6 +18,8 @@ using WebApi.Infrastucture;
 using WebApi.Logging;
 using WebApi.Filter;
 using System.Net;
+using WebApi.Pagination;
+using BusinessLogicLayer.Pagination;
 
 namespace WebApi.Controllers
 {
@@ -157,6 +159,19 @@ namespace WebApi.Controllers
             await gameService.CommentGame(create);
             return StatusCode((int)HttpStatusCode.Created, "Comment was created");
         }
+
+
+
+        [CustomValidation]
+        [HttpGet("filter")]
+        public async Task<IActionResult> getordered([FromQuery]PagingParamsBll pagingparams)
+        {
+
+            await gameService.OrderedBy(pagingparams);
+            return StatusCode((int)HttpStatusCode.Created, "Comment was created");
+        }
+
+
 
     }
 }
