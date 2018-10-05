@@ -297,12 +297,11 @@ namespace BusinessLogicLayer.Services
                 }
                 return order;
             };
-
+           
             Expression<Func<Game, bool>> expression = p =>
-            p.GenreGames.All(g => paging.Genres.Contains(g.GenreId)) &&
-            p.GamePlatformTypes.All(g => paging.Platforms.Contains(g.PlatformTypeId)) &&
+            p.GenreGames.Select(s => s.GenreId).Intersect(paging.Genres).Count() == paging.Genres.Count &&
+            p.GamePlatformTypes.Select(s => s.PlatformTypeId).Intersect(paging.Platforms).Count() == paging.Platforms.Count &&
             p.Price >= paging.MinPrice && p.Price <= paging.MaxPrice;
-
 
             var result = await unitOfWork.GameRepository.GetAsync(expression, orderby);
 

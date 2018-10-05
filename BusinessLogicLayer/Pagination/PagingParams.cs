@@ -10,9 +10,9 @@ namespace BusinessLogicLayer.Pagination
 
         public int PageSize { get; set; } = 3;
 
-        public List<int> Genres { get; set; }
+        public List<int> Genres { get; set; } = new List<int>();
 
-        public List<int> Platforms { get; set; }
+        public List<int> Platforms { get; set; } = new List<int>();
 
         public DropdownList DropdownList { get; set; }
 

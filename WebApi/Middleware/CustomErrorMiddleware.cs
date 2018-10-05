@@ -48,7 +48,7 @@ namespace WebApi.Middleware
                         method = ex.TargetSite.ReflectedType.FullName,
                     }));
 
-
+                context.Response.StatusCode = (int)code;
                 await context.Response.WriteAsync(new UserErrorDetails()
                 {
                     StatusCode = (int)code,
@@ -61,19 +61,19 @@ namespace WebApi.Middleware
                 code = HttpStatusCode.BadRequest;
 
 
-                _logger.LogCritical(ex,
-                         LogMessageComposer.Compose(
-                    new
-                    {
-                        user = context.User.Identity.Name,
-                        message = ex.Message,
-                        targetsite = ex.TargetSite,
-                        exception = ex,
-                        uri = context.Request.Path,
-                        method = context.Request.Method,
-                  
-                    }));
+               _logger.LogCritical(ex,
+                        LogMessageComposer.Compose(
+                   new
+                   {
+                       user = context.User.Identity?.Name ?? "anonymous",
+                       message = ex.Message,
+                       targetsite = ex.TargetSite.Name,
+                       uri = context.Request.Path,
+                      method = context.Request.Method,
 
+                   }));
+
+                context.Response.StatusCode = (int)code;
                 await context.Response.WriteAsync(new UserErrorDetails()
                 {
                     StatusCode = (int)code,

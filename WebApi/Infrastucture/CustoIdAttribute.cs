@@ -13,7 +13,8 @@ namespace WebApi.Infrastucture
     {
         
 
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        protected override ValidationResult IsValid(object value,
+            ValidationContext validationContext)
         {
             var result = value as List<int>;
             string errorMessage = string.Empty;
@@ -34,6 +35,7 @@ namespace WebApi.Infrastucture
 
             if (IsValid == false)
             {
+               this.ErrorMessage = errorMessage;
                 return new ValidationResult(errorMessage);
             }
 
