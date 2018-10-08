@@ -10,7 +10,7 @@ namespace BusinessLogicLayer.Configuration
         protected override void Load(ContainerBuilder builder)
         {
 
-            // builder.RegisterAssemblyTypes(this.GetType().Assembly).AsImplementedInterfaces();
+            builder.RegisterAssemblyTypes(this.GetType().Assembly).AsImplementedInterfaces();
 
             builder.RegisterType<CommentService>().As<ICommentService>();
          //   builder.RegisterType<GamePlatformService>().As<IGamePlatformService>();

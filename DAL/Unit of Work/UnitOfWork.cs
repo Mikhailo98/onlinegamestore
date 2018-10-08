@@ -23,7 +23,6 @@ namespace DAL
         private GamePlatformTypeRepository gamePlatformTypeRepository;
 
 
-
         public IRepository<GamePlatformType> GamePlatformTypeRepository
         {
             get

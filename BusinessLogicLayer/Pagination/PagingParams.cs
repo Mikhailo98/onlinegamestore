@@ -10,17 +10,17 @@ namespace BusinessLogicLayer.Pagination
 
         public int PageSize { get; set; } = 3;
 
-        public List<int> Genres { get; set; } = new List<int>();
+        public List<int> Genres { get; set; }
 
-        public List<int> Platforms { get; set; } = new List<int>();
+        public List<int> Platforms { get; set; } 
 
         public DropdownList DropdownList { get; set; }
 
-        public decimal MaxPrice { get; set; } = Decimal.MaxValue;
+        public decimal MaxPrice { get; set; } 
 
         public decimal MinPrice { get; set; }
 
-        public string SubName { get; set; } = string.Empty;
+        public string SubName { get; set; } 
 
     }
 

@@ -4,18 +4,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 using BusinessLogicLayer.Dtos;
 using AutoMapper;
-using Domain.Repository;
-using BusinessLogicLayer.Models;
 using BusinessLogicLayer.Models.Dtos.GameDto;
 using BusinessLogicLayer.Models.Dtos.CommentDto;
 using System.Runtime.CompilerServices;
 using BusinessLogicLayer.Pagination;
-using System.Collections.Generic;
-
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using Domain.Filter;
 
 [assembly: InternalsVisibleTo("BusinessLogicLayer.Test")]
 
@@ -25,12 +23,16 @@ namespace BusinessLogicLayer.Services
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
+        private readonly ILogger<GameService> logger;
+        private readonly IGameFilter filter;
 
-
-        public GameService(IUnitOfWork unitOfWork, IMapper mapper)
+        public GameService(IUnitOfWork unitOfWork, IMapper mapper,
+            ILogger<GameService> logger, IGameFilter filter)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
+            this.logger = logger;
+            this.filter = filter;
         }
 
 
@@ -180,12 +182,14 @@ namespace BusinessLogicLayer.Services
         {
             using (unitOfWork)
             {
+                logger.LogInformation($"Request with id {id}");
                 var gameEntity = await unitOfWork.GameRepository
                     .GetSingleAsync(filter: g => g.Id == id);
 
                 if (gameEntity == null)
                 {
                     throw new ArgumentException("Invalid game id");
+
                 }
 
                 var dto = mapper.Map<GameDto>(gameEntity);
@@ -232,7 +236,6 @@ namespace BusinessLogicLayer.Services
         {
             using (unitOfWork)
             {
-
                 var gameEntity = await unitOfWork.GameRepository.GetSingleAsync(p => p.Id == comment.GameId);
                 if (gameEntity == null)
                 {
@@ -252,6 +255,7 @@ namespace BusinessLogicLayer.Services
 
         public async Task<string> GetGameLocalPath(int id)
         {
+            logger.LogInformation($"Request with id {id}");
             var gameEntity = await unitOfWork.GameRepository.GetSingleAsync(p => p.Id == id);
             if (gameEntity == null)
             {
@@ -268,7 +272,6 @@ namespace BusinessLogicLayer.Services
         //TODO:
         public async Task<List<GameDto>> OrderedBy(PagingParamsBll paging)
         {
-
             Func<IQueryable<Game>, IOrderedQueryable<Game>> orderby = (q) =>
             {
                 IOrderedQueryable<Game> order;
@@ -297,16 +300,28 @@ namespace BusinessLogicLayer.Services
                 }
                 return order;
             };
-           
+
+            var r = filter
+                .IncludeGenres(paging.Genres)
+                .IncludePlatforms(paging.Platforms)
+                .SetMaxPrice(paging.MaxPrice)
+                .SetMinPrice(paging.MinPrice)
+                .GameExpression;
+
+          
             Expression<Func<Game, bool>> expression = p =>
             p.GenreGames.Select(s => s.GenreId).Intersect(paging.Genres).Count() == paging.Genres.Count &&
             p.GamePlatformTypes.Select(s => s.PlatformTypeId).Intersect(paging.Platforms).Count() == paging.Platforms.Count &&
             p.Price >= paging.MinPrice && p.Price <= paging.MaxPrice;
 
-            var result = await unitOfWork.GameRepository.GetAsync(expression, orderby);
+            //logging
+            string n = JsonConvert.SerializeObject(paging);
+            logger.LogInformation($"Method Parameters: {n}");
 
+            var result = await unitOfWork.GameRepository.GetAsync(r, orderby);
 
-            return null;
+            var mappedResult = mapper.Map<List<GameDto>>(result);
+            return mappedResult;
 
         }
     }

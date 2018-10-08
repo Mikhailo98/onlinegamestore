@@ -164,11 +164,13 @@ namespace WebApi.Controllers
 
         [CustomValidation]
         [HttpGet("filter")]
-        public async Task<IActionResult> getordered([FromQuery]PagingParamsBll pagingparams)
+        [ServiceFilter(typeof(PerformanceLogging))]
+        public async Task<IActionResult> GetOrderedGames([FromQuery]PagingParamsModel pagingParamsModel)
         {
 
-            await gameService.OrderedBy(pagingparams);
-            return StatusCode((int)HttpStatusCode.Created, "Comment was created");
+            var mappedParams = mapper.Map<PagingParamsBll>(pagingParamsModel);
+            var games = await gameService.OrderedBy(mappedParams);
+            return StatusCode((int)HttpStatusCode.OK, games);
         }
 
 

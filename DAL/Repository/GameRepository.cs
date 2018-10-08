@@ -43,7 +43,8 @@ namespace DAL
             return await dbSet.ToListAsync();
         }
 
-        public async Task<IEnumerable<Game>> GetAsync(Expression<Func<Game, bool>> filter = null, Func<IQueryable<Game>, IOrderedQueryable<Game>> orderBy = null)
+        public async Task<IEnumerable<Game>> GetAsync(Expression<Func<Game, bool>> filter = null,
+            Func<IQueryable<Game>, IOrderedQueryable<Game>> orderBy = null)
         {
             IQueryable<Game> query = dbSet;
 
