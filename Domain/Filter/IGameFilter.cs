@@ -5,13 +5,13 @@ using Domain;
 
 namespace Domain.Filter
 {
-    public interface IGameFilter
+    public interface IGameFilter : IFilter<Game>
     {
-        Expression<Func<Game, bool>> GameExpression { get; }
-
         IGameFilter IncludeGenres(List<int> ids);
         IGameFilter IncludePlatforms(List<int> ids);
         IGameFilter SetMinPrice(decimal minimal);
         IGameFilter SetMaxPrice(decimal maximun);
+        IGameFilter IncludeNameSubstring(string substring);
+
     }
 }

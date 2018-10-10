@@ -18,7 +18,7 @@ namespace WebApi.Models
         [CustomIDsValidation]
         public List<int> Platforms { get; set; } = new List<int>();
 
-        public DropdownList DropdownList { get; set; }
+        public SortDropDownList DropdownList { get; set; }
 
         public decimal MaxPrice { get; set; } = Decimal.MaxValue;
 
@@ -28,7 +28,7 @@ namespace WebApi.Models
 
     }
 
-    public enum DropdownList
+    public enum SortDropDownList
     {
         mostViewed,
         MostCommented,

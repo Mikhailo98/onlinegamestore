@@ -14,6 +14,7 @@ using BusinessLogicLayer.Pagination;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Domain.Filter;
+using DataAccessLayer.Filter;
 
 [assembly: InternalsVisibleTo("BusinessLogicLayer.Test")]
 
@@ -272,6 +273,7 @@ namespace BusinessLogicLayer.Services
         //TODO:
         public async Task<List<GameDto>> OrderedBy(PagingParamsBll paging)
         {
+            //TODO: factory
             Func<IQueryable<Game>, IOrderedQueryable<Game>> orderby = (q) =>
             {
                 IOrderedQueryable<Game> order;
@@ -279,19 +281,19 @@ namespace BusinessLogicLayer.Services
 
                 switch (paging.DropdownList)
                 {
-                    case DropdownList.byPriceDesc:
+                    case SortDropDownList.byPriceDesc:
                         order = q.OrderByDescending(j => j.Price);
                         break;
-                    case DropdownList.ByPriceAsc:
+                    case SortDropDownList.ByPriceAsc:
                         order = q.OrderBy(j => j.Price);
                         break;
-                    case DropdownList.MostCommented:
+                    case SortDropDownList.MostCommented:
                         order = q.OrderByDescending(j => j.Comments.Count);
                         break;
-                    case DropdownList.mostViewed:
+                    case SortDropDownList.mostViewed:
                         order = q.OrderByDescending(j => j.Comments.Count);
                         break;
-                    case DropdownList.New:
+                    case SortDropDownList.New:
                         order = q.OrderByDescending(j => j.AddedToStore.Date);
                         break;
                     default:
@@ -301,24 +303,30 @@ namespace BusinessLogicLayer.Services
                 return order;
             };
 
-            var r = filter
-                .IncludeGenres(paging.Genres)
-                .IncludePlatforms(paging.Platforms)
-                .SetMaxPrice(paging.MaxPrice)
-                .SetMinPrice(paging.MinPrice)
-                .GameExpression;
 
-          
-            Expression<Func<Game, bool>> expression = p =>
-            p.GenreGames.Select(s => s.GenreId).Intersect(paging.Genres).Count() == paging.Genres.Count &&
-            p.GamePlatformTypes.Select(s => s.PlatformTypeId).Intersect(paging.Platforms).Count() == paging.Platforms.Count &&
-            p.Price >= paging.MinPrice && p.Price <= paging.MaxPrice;
 
-            //logging
-            string n = JsonConvert.SerializeObject(paging);
-            logger.LogInformation($"Method Parameters: {n}");
 
-            var result = await unitOfWork.GameRepository.GetAsync(r, orderby);
+
+
+            var returnedFilter = filter
+                    .IncludeGenres(paging.Genres)
+                    .IncludePlatforms(paging.Platforms)
+                    .SetMaxPrice(paging.MaxPrice)
+                    .SetMinPrice(paging.MinPrice)
+                    .FilterExpression;
+
+
+
+
+            // Expression<Func<Game, bool>> expr = Expression.Lambda<Func<Game, bool>>(Expression.And(expr1.Body, expr2.Body));
+            //Expression<Func<Game, bool>> expression = p =>
+            //p.GenreGames.Select(s => s.GenreId).Intersect(paging.Genres).Count() == paging.Genres.Count &&
+            //p.GamePlatformTypes.Select(s => s.PlatformTypeId).Intersect(paging.Platforms).Count() == paging.Platforms.Count &&
+            //p.Price >= paging.MinPrice && p.Price <= paging.MaxPrice;
+
+
+
+            var result = await unitOfWork.GameRepository.GetAsync(returnedFilter, orderby);
 
             var mappedResult = mapper.Map<List<GameDto>>(result);
             return mappedResult;

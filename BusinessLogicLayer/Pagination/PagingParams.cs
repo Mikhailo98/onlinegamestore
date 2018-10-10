@@ -14,7 +14,7 @@ namespace BusinessLogicLayer.Pagination
 
         public List<int> Platforms { get; set; } 
 
-        public DropdownList DropdownList { get; set; }
+        public SortDropDownList DropdownList { get; set; }
 
         public decimal MaxPrice { get; set; } 
 
@@ -24,7 +24,7 @@ namespace BusinessLogicLayer.Pagination
 
     }
 
-    public enum DropdownList
+    public enum SortDropDownList
     {
         mostViewed,
         MostCommented,
