@@ -17,11 +17,9 @@ namespace DataAccessLayer.Filter
         byPriceDesc,
         New
     }       
-    
 
     public class Context
     {
-
         private static Dictionary<SortType, ISortStrategy> _strategies =
             new Dictionary<SortType, ISortStrategy>();
 
