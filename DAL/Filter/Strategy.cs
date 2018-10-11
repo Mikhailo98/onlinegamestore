@@ -16,9 +16,8 @@ namespace DataAccessLayer.Filter
         ByPriceAsc,
         byPriceDesc,
         New
-    }    
-
-
+    }       
+    
 
     public class Context
     {
