@@ -23,8 +23,7 @@ namespace DAL
 
         static ApplicationContext()
         {
-
-            // Initialize();
+            //Initialize();
         }
 
         public static void Initialize()
