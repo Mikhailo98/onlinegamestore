@@ -15,6 +15,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Domain.Filter;
 using DataAccessLayer.Filter;
+using SortDropDownList = BusinessLogicLayer.Pagination.SortDropDownList;
 
 [assembly: InternalsVisibleTo("BusinessLogicLayer.Test")]
 
@@ -269,7 +270,6 @@ namespace BusinessLogicLayer.Services
 
 
 
-
         //TODO:
         public async Task<List<GameDto>> OrderedBy(PagingParamsBll paging)
         {
@@ -304,29 +304,31 @@ namespace BusinessLogicLayer.Services
             };
 
 
-
-
-
-
             var returnedFilter = filter
-                    .IncludeGenres(paging.Genres)
-                    .IncludePlatforms(paging.Platforms)
-                    .SetMaxPrice(paging.MaxPrice)
-                    .SetMinPrice(paging.MinPrice)
-                    .FilterExpression;
+                            .IncludeGenres(paging.Genres)
+                            .IncludePlatforms(paging.Platforms)
+                            .SetMaxPrice(paging.MaxPrice)
+                            .SetMinPrice(paging.MinPrice)
+                            .FilterExpression;
 
 
 
 
-            // Expression<Func<Game, bool>> expr = Expression.Lambda<Func<Game, bool>>(Expression.And(expr1.Body, expr2.Body));
             //Expression<Func<Game, bool>> expression = p =>
             //p.GenreGames.Select(s => s.GenreId).Intersect(paging.Genres).Count() == paging.Genres.Count &&
             //p.GamePlatformTypes.Select(s => s.PlatformTypeId).Intersect(paging.Platforms).Count() == paging.Platforms.Count &&
             //p.Price >= paging.MinPrice && p.Price <= paging.MaxPrice;
 
+            IQueryable<Game> listOppLineData = Enumerable.Empty<Game>().AsQueryable();
+            listOppLineData = listOppLineData.Skip(paging.PageSize * (paging.PageNumber - 1)).Take(paging.PageSize);
+
+           
+            var r = Context.DoContext(DataAccessLayer.Filter.SortType.ByPriceAsc,
+                listOppLineData);
 
 
-            var result = await unitOfWork.GameRepository.GetAsync(returnedFilter, orderby);
+            var result = await unitOfWork.GameRepository
+                .GetAsync(returnedFilter, r);
 
             var mappedResult = mapper.Map<List<GameDto>>(result);
             return mappedResult;

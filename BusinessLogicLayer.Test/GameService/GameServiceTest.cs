@@ -8,7 +8,9 @@ using BusinessLogicLayer.Interfaces;
 using BusinessLogicLayer.Models.Dtos.CommentDto;
 using BusinessLogicLayer.Services;
 using Domain;
+using Domain.Filter;
 using Domain.Repository;
+using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 using System;
@@ -89,8 +91,10 @@ namespace BusinessLogicLayer.Test.GameServiceTest
             unitofworkMoq.Setup(tr => tr.PlatformTypeRepository)
                             .Returns(platformRepositoryMoq.Object);
 
+            Mock<ILogger<GameService>> mock = new Mock<ILogger<GameService>>();
+            Mock<IGameFilter> filter = new Mock<IGameFilter>();
 
-            service = new GameService(unitofworkMoq.Object, mapperMoq.Object);
+            service = new GameService(unitofworkMoq.Object, mapperMoq.Object, mock.Object, filter.Object);
 
             game = new Game()
             {

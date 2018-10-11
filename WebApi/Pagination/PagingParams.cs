@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApi.Infrastucture;
@@ -17,7 +18,7 @@ namespace WebApi.Pagination
         [CustomIDsValidation]
         public List<int> Platforms { get; set; }
 
-        public DropdownList DropdownList { get; set; } = DropdownList.New;
+        public SortType DropdownList { get; set; } = SortType.New;
 
         public decimal PriceFrom { get; set; }
 
@@ -27,12 +28,21 @@ namespace WebApi.Pagination
 
     }
 
-    public enum DropdownList
+    public enum SortType
     {
+        [Display(Name = "Most Viewed")]
         mostViewed,
+
+        [Display(Name = "Most Commented")]
         MostCommented,
+
+        [Display(Name = "Price: Low to High")]
         ByPriceAsc,
+
+        [Display(Name = "Price: High to Low")]
         byPriceDesc,
+
+        [Display(Name = "The Newest")]
         New
     }
 }
