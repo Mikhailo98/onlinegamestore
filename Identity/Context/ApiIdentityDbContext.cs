@@ -12,18 +12,34 @@ namespace Identity.Context
     public class AppIdentityDbContext : IdentityDbContext<User>
     {
 
+        static AppIdentityDbContext()
+        {
+            Initialize();
+        }
 
-        public AppIdentityDbContext()
+        private static void Initialize()
+        {
+            //using (var ctx = new AppIdentityDbContext())
+            //{
+            //    ctx.Database.EnsureDeleted();
+            //    ctx.Database.EnsureCreated();
+
+            //}
+        }
+
+        public AppIdentityDbContext() : base()
         {
 
         }
 
-
-
-        public AppIdentityDbContext(DbContextOptions<AppIdentityDbContext> options)
-            : base(options)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            optionsBuilder
+                .UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=GamesStore_Identity;Trusted_Connection=True;");
+
         }
+
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
