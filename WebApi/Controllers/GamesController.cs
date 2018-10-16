@@ -24,6 +24,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WebApi.Controllers
 {
+    [Authorize]
     [Route("api/games")]
     public class GamesController : Controller
     {
@@ -48,6 +49,7 @@ namespace WebApi.Controllers
 
 
         [HttpGet]
+        [Authorize]
         [ServiceFilter(typeof(PerformanceLogging))]
         public async Task<IActionResult> GetAll()
         {
