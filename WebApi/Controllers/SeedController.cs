@@ -29,7 +29,7 @@ namespace WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> Initialize()
         {
-            var role1 = new IdentityRole() { Name = "Administrator" };
+            var role1 = new IdentityRole() { Name = "Admin" };
             var role2 = new IdentityRole() { Name = "Manager" };
             var role3 = new IdentityRole() { Name = "Publisher" };
             var role4 = new IdentityRole() { Name = "Moderator" };
@@ -41,22 +41,22 @@ namespace WebApi.Controllers
                 UserName = "Adminische",
                 Email = "admin@mail.com",
                 SecurityStamp = Guid.NewGuid().ToString(),
-               
+
             };
 
-            await userManager.CreateAsync(admin, "admin123");
+            var r = await userManager.CreateAsync(admin, "Admin123$");
 
-            await userManager.AddToRoleAsync(admin, "User");
+            await roleManager.CreateAsync(role1);
+            await roleManager.CreateAsync(role2);
+            await roleManager.CreateAsync(role3);
+            await roleManager.CreateAsync(role4);
+            await roleManager.CreateAsync(role5);
+            await roleManager.CreateAsync(role6);
 
-         //   await roleManager.CreateAsync(role1);
+            var name = await roleManager.FindByNameAsync("Admin");
 
-
-            //await roleManager.CreateAsync(role2);
-            //await roleManager.CreateAsync(role3);
-            //await roleManager.CreateAsync(role4);
-            //await roleManager.CreateAsync(role5);
-            //await roleManager.CreateAsync(role6);
-
+            var result = await userManager.AddToRoleAsync(admin, name.Name);
+                       
             return Ok();
 
         }

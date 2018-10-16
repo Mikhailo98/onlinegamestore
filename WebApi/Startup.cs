@@ -82,7 +82,7 @@ namespace WebApi
             //Add Identity context (you can init new empty project with "Individual user accounts" in order to create database and register users)
 
             string connstring = Configuration.GetConnectionString("AspIdentityDbConnection");
-            services.AddDbContext<AppIdentityDbContext>(options => options.UseSqlServer(connstring));
+            services.AddDbContext<AppIdentityDbContext>();
 
 
             // services.AddDbContext<AppIdentityDbContext>();
@@ -121,8 +121,14 @@ namespace WebApi
             {
                 app.UseDeveloperExceptionPage();
             }
+           
+            if (env.IsProduction())
+            {
+                app.UseMiddleware<CustomErrorMiddleware>();
 
-      
+            }
+
+
 
 
             app.UseStaticFiles();
@@ -136,7 +142,6 @@ namespace WebApi
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
 
-            app.UseMiddleware<CustomErrorMiddleware>();
             app.UseMvc();
             app.UseAuthentication();
 
