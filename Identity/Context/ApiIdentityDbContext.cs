@@ -19,12 +19,12 @@ namespace Identity.Context
 
         private static void Initialize()
         {
-            //using (var ctx = new AppIdentityDbContext())
-            //{
-            //    ctx.Database.EnsureDeleted();
-            //    ctx.Database.EnsureCreated();
+            using (var ctx = new AppIdentityDbContext())
+            {
+                //ctx.Database.EnsureDeleted();
+                ctx.Database.EnsureCreated();
 
-            //}
+            }
         }
 
         public AppIdentityDbContext() : base()
