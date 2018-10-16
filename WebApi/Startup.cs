@@ -53,7 +53,7 @@ namespace WebApi
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "GamesStore", Version = "v1" });
-                //c.OperationFilter<SecurityRequirementsOperationFilter>();
+                c.OperationFilter<SecurityRequirementsOperationFilter>();
                 c.AddSecurityDefinition("bearer", new ApiKeyScheme()
                 {
                     Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",

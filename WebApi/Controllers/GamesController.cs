@@ -20,6 +20,7 @@ using WebApi.Filter;
 using System.Net;
 using WebApi.Pagination;
 using BusinessLogicLayer.Pagination;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApi.Controllers
 {
@@ -50,6 +51,7 @@ namespace WebApi.Controllers
         [ServiceFilter(typeof(PerformanceLogging))]
         public async Task<IActionResult> GetAll()
         {
+            
             List<GameDto> games = await gameService.GetAll();
             return StatusCode(200, games);
         }
