@@ -21,6 +21,14 @@ using WebApi.Middleware;
 using NLog.Extensions.Logging;
 using WebApi.Logging;
 using WebApi.Filter;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Authentication;
+using Identity.Context;
+using Microsoft.EntityFrameworkCore;
+using Identity.Entity;
+using Microsoft.AspNetCore.Identity;
+using Identity.Initialize;
 
 namespace WebApi
 {
@@ -29,6 +37,14 @@ namespace WebApi
 
     public class Startup
     {
+
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public IServiceProvider ConfigureServices(IServiceCollection services)
@@ -36,8 +52,47 @@ namespace WebApi
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+                c.SwaggerDoc("v1", new Info { Title = "GamesStore", Version = "v1" });
+                //c.OperationFilter<SecurityRequirementsOperationFilter>();
+                c.AddSecurityDefinition("bearer", new ApiKeyScheme()
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = "header",
+                    Type = "apiKey"
+                });
             });
+            //Configure Authentication schemas
+            services.AddAuthentication()
+                //Add Bearer Authentication support
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = Configuration["Jwt:Issuer"],
+                        ValidAudience = Configuration["Jwt:Issuer"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+                    };
+                });
+
+            //Add Identity context (you can init new empty project with "Individual user accounts" in order to create database and register users)
+
+            string connstring = Configuration.GetConnectionString("AspIdentityDbConnection");
+            services.AddDbContext<AppIdentityDbContext>(options => options.UseSqlServer(connstring));
+
+
+            // services.AddDbContext<AppIdentityDbContext>();
+
+            //Configure Identity
+            //services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<AppIdentityDbContext>();
+
+            services.AddIdentity<User, IdentityRole>()
+        .AddEntityFrameworkStores<AppIdentityDbContext>()
+        .AddDefaultTokenProviders();
 
             services.AddScoped<PerformanceLogging>();
 
@@ -58,7 +113,8 @@ namespace WebApi
 
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, 
+            IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
 
             if (env.IsDevelopment())
@@ -66,9 +122,7 @@ namespace WebApi
                 app.UseDeveloperExceptionPage();
             }
 
-         
-
-
+      
 
 
             app.UseStaticFiles();
@@ -83,8 +137,8 @@ namespace WebApi
             });
 
             app.UseMiddleware<CustomErrorMiddleware>();
-
             app.UseMvc();
+            app.UseAuthentication();
 
             app.Run(async (context) =>
             {

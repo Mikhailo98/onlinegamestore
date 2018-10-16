@@ -304,6 +304,7 @@ namespace BusinessLogicLayer.Services
             };
 
 
+           
             var returnedFilter = filter
                             .IncludeGenres(paging.Genres)
                             .IncludePlatforms(paging.Platforms)
