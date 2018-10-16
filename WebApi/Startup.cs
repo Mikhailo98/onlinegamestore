@@ -49,11 +49,15 @@ namespace WebApi
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
+            services.AddMvcCore().AddDataAnnotations();
+
+
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "GamesStore", Version = "v1" });
-                //c.OperationFilter<SecurityRequirementsOperationFilter>();
+                c.OperationFilter<SecurityRequirementsOperationFilter>();
                 c.AddSecurityDefinition("bearer", new ApiKeyScheme()
                 {
                     Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
@@ -142,8 +146,16 @@ namespace WebApi
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
 
-            app.UseMvc();
+            app.UseCors(x => x
+              .AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader()
+              .AllowCredentials());
+
+            //Enable Authentication
             app.UseAuthentication();
+
+            app.UseMvc();
 
             app.Run(async (context) =>
             {

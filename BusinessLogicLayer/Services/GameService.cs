@@ -273,38 +273,7 @@ namespace BusinessLogicLayer.Services
         //TODO:
         public async Task<List<GameDto>> OrderedBy(PagingParamsBll paging)
         {
-            //TODO: factory
-            Func<IQueryable<Game>, IOrderedQueryable<Game>> orderby = (q) =>
-            {
-                IOrderedQueryable<Game> order;
-                q = q.Skip(paging.PageSize * (paging.PageNumber - 1)).Take(paging.PageSize);
 
-                switch (paging.DropdownList)
-                {
-                    case SortDropDownList.byPriceDesc:
-                        order = q.OrderByDescending(j => j.Price);
-                        break;
-                    case SortDropDownList.ByPriceAsc:
-                        order = q.OrderBy(j => j.Price);
-                        break;
-                    case SortDropDownList.MostCommented:
-                        order = q.OrderByDescending(j => j.Comments.Count);
-                        break;
-                    case SortDropDownList.mostViewed:
-                        order = q.OrderByDescending(j => j.Comments.Count);
-                        break;
-                    case SortDropDownList.New:
-                        order = q.OrderByDescending(j => j.AddedToStore.Date);
-                        break;
-                    default:
-                        order = null;
-                        break;
-                }
-                return order;
-            };
-
-
-           
             var returnedFilter = filter
                             .IncludeGenres(paging.Genres)
                             .IncludePlatforms(paging.Platforms)
@@ -312,24 +281,16 @@ namespace BusinessLogicLayer.Services
                             .SetMinPrice(paging.MinPrice)
                             .FilterExpression;
 
-
-
-
-            //Expression<Func<Game, bool>> expression = p =>
-            //p.GenreGames.Select(s => s.GenreId).Intersect(paging.Genres).Count() == paging.Genres.Count &&
-            //p.GamePlatformTypes.Select(s => s.PlatformTypeId).Intersect(paging.Platforms).Count() == paging.Platforms.Count &&
-            //p.Price >= paging.MinPrice && p.Price <= paging.MaxPrice;
+            var sorttype = mapper.Map<SortType>(paging.DropdownList);
 
             IQueryable<Game> listOppLineData = Enumerable.Empty<Game>().AsQueryable();
             listOppLineData = listOppLineData.Skip(paging.PageSize * (paging.PageNumber - 1)).Take(paging.PageSize);
 
-           
-            var r = Context.DoContext(DataAccessLayer.Filter.SortType.ByPriceAsc,
-                listOppLineData);
+
+            var orderbyRequest = Context.DoContext(sorttype, listOppLineData);
 
 
-            var result = await unitOfWork.GameRepository
-                .GetAsync(returnedFilter, r);
+            var result = await unitOfWork.GameRepository.GetAsync(returnedFilter, orderbyRequest);
 
             var mappedResult = mapper.Map<List<GameDto>>(result);
             return mappedResult;
