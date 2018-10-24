@@ -30,6 +30,7 @@ namespace WebApi.Controllers
 
         // GET: api/User
         [HttpGet]
+        [Authorize]
         public IEnumerable<User> Get()
         {
             return userManager.Users.ToList();
@@ -47,7 +48,6 @@ namespace WebApi.Controllers
         [CustomValidation]
         public async Task<IActionResult> Post([FromBody]RegisterUser value)
         {
-            await userManager.DeleteAsync(await userManager.FindByNameAsync(value.UserName));
             if (await userManager.FindByEmailAsync(value.Email) != null)
             {
                 throw new ArgumentException("User  with such email is already registered");
@@ -103,17 +103,6 @@ namespace WebApi.Controllers
         }
 
 
-
-
-
-        // PUT: api/User/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-
-
-        }
-
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
@@ -135,7 +124,6 @@ namespace WebApi.Controllers
         }
 
 
-        [Authorize(Roles = "Admin")]
         [Route("{id}/roles")]
         [HttpPut]
         public async Task<IActionResult> AssignRolesToUser(string id, [FromBody] List<string> rolesToAssign)

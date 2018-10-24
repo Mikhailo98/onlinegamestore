@@ -47,10 +47,7 @@ namespace WebApi.Controllers
                 throw new ArgumentException("Suck Role already exists");
             }
 
-
             var role = new IdentityRole { Name = value.Name };
-
-
             var result = await roleManager.CreateAsync(role);
 
             if (!result.Succeeded)
@@ -86,8 +83,25 @@ namespace WebApi.Controllers
 
         // PUT: api/Role/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public async Task<IActionResult> Put(string id, [FromBody]EditRole value)
         {
+            var roletoEdit = await roleManager.FindByIdAsync(id);
+            if (roletoEdit == null)
+            {
+                throw new ArgumentException("Invalid Used Id");
+            }
+
+            roletoEdit.Name = value.Name;
+
+            IdentityResult result = await roleManager.UpdateAsync(roletoEdit);
+
+            if (!result.Succeeded)
+            {
+                return GetErrorResult(result);
+            }
+            return NoContent();
+
+
         }
 
         // DELETE: api/ApiWithActions/5

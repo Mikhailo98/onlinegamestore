@@ -24,21 +24,17 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WebApi.Controllers
 {
-    [Authorize]
     [Route("api/games")]
     public class GamesController : Controller
     {
-
         private readonly IGameService gameService;
         private readonly IMapper mapper;
         private readonly IHostingEnvironment appEnvironment;
         private readonly ILogger<GamesController> _logger;
 
-
-
         public GamesController(IGameService gameService,
-            IMapper mapper, IHostingEnvironment appEnvironment,
-            ILogger<GamesController> logger)
+                IMapper mapper, IHostingEnvironment appEnvironment,
+                ILogger<GamesController> logger)
         {
             this.gameService = gameService;
             this.mapper = mapper;
@@ -46,18 +42,13 @@ namespace WebApi.Controllers
             _logger = logger;
         }
 
-
-
         [HttpGet]
-        [Authorize]
         [ServiceFilter(typeof(PerformanceLogging))]
         public async Task<IActionResult> GetAll()
         {
-            
             List<GameDto> games = await gameService.GetAll();
             return StatusCode(200, games);
         }
-
 
         [HttpGet("{id:int:min(1)}")]
         public async Task<IActionResult> GetById(int id)
@@ -97,6 +88,7 @@ namespace WebApi.Controllers
 
 
         [HttpPut("{id:int:min(1)}")]
+        [Authorize(Roles = "Manager")]
         [CustomValidation]
         public async Task<IActionResult> EditGame(int id, [FromBody]GameCreateModel game)
         {
@@ -119,6 +111,7 @@ namespace WebApi.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "Manager")]
         [CustomValidation]
         public async Task<IActionResult> CreateGame([FromBody]GameCreateModel game)
         {
@@ -139,6 +132,7 @@ namespace WebApi.Controllers
 
 
         [HttpDelete("{id:int:min(1)}")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> DeleteById(int id)
         {
             await gameService.DeleteGame(id);
@@ -171,7 +165,6 @@ namespace WebApi.Controllers
         [ServiceFilter(typeof(PerformanceLogging))]
         public async Task<IActionResult> GetOrderedGames([FromQuery]PagingParamsModel pagingParamsModel)
         {
-
             var mappedParams = mapper.Map<PagingParamsBll>(pagingParamsModel);
             var games = await gameService.OrderedBy(mappedParams);
             return StatusCode((int)HttpStatusCode.OK, games);

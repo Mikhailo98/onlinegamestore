@@ -14,8 +14,7 @@ using WebApi.Models.Identity;
 
 namespace GameStore.NetCore.Api.Controllers
 {
-    //remove this shit
-    [Route("api/[controller]")]
+    [Route("api/token")]
     public class TokenController : Controller
     {
         private readonly UserManager<User> _userManager;
@@ -48,21 +47,23 @@ namespace GameStore.NetCore.Api.Controllers
         {
             //To simplify the example, let's assume 1-1 user-role relation
             var role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+
             var claims = new[] {
-                    new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-                    new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
-                    new Claim("role", role)
-            };
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+               };
+
+
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var token = new JwtSecurityToken(
-                _config["Jwt:Issuer"],
-                _config["Jwt:Issuer"],
-                claims: claims,
-                expires: DateTime.Now.AddMinutes(30),
-                signingCredentials: creds);
+            var token = new JwtSecurityToken(_config["Jwt:Issuer"],
+              _config["Jwt:Issuer"],
+              claims,
+              expires: DateTime.Now.AddMinutes(30),
+              signingCredentials: creds);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }

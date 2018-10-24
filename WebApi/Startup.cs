@@ -29,11 +29,13 @@ using Microsoft.EntityFrameworkCore;
 using Identity.Entity;
 using Microsoft.AspNetCore.Identity;
 using Identity.Initialize;
+using WebApi.Options;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Newtonsoft.Json.Serialization;
+using WebApi.Infrastucture;
 
 namespace WebApi
 {
-
-
 
     public class Startup
     {
@@ -45,15 +47,9 @@ namespace WebApi
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddCors();
-            services.AddMvcCore().AddDataAnnotations();
 
-
-            // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "GamesStore", Version = "v1" });
@@ -63,45 +59,44 @@ namespace WebApi
                     Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
                     Name = "Authorization",
                     In = "header",
-                    Type = "apiKey"
+                    Type = "apiKey",
+
                 });
             });
             //Configure Authentication schemas
-            services.AddAuthentication()
-                //Add Bearer Authentication support
-                .AddJwtBearer(options =>
-                {
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidIssuer = Configuration["Jwt:Issuer"],
-                        ValidAudience = Configuration["Jwt:Issuer"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
-                    };
-                });
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+             .AddJwtBearer(options =>
+             {
+                 options.TokenValidationParameters = new TokenValidationParameters
+                 {
+                     ValidateIssuer = true,
+                     ValidateAudience = true,
+                     ValidateLifetime = true,
+                     ValidateIssuerSigningKey = true,
+                     ValidIssuer = Configuration["Jwt:Issuer"],
+                     ValidAudience = Configuration["Jwt:Issuer"],
+                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+                 };
+             });
 
             //Add Identity context (you can init new empty project with "Individual user accounts" in order to create database and register users)
 
             string connstring = Configuration.GetConnectionString("AspIdentityDbConnection");
             services.AddDbContext<AppIdentityDbContext>();
 
-
-            // services.AddDbContext<AppIdentityDbContext>();
-
-            //Configure Identity
-            //services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<AppIdentityDbContext>();
-
-            services.AddIdentity<User, IdentityRole>()
-        .AddEntityFrameworkStores<AppIdentityDbContext>()
-        .AddDefaultTokenProviders();
+            services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<AppIdentityDbContext>();
 
             services.AddScoped<PerformanceLogging>();
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddCors();
+
+         
             services.AddAutoMapper();
 
             var builder = new ContainerBuilder();
@@ -111,13 +106,11 @@ namespace WebApi
             var container = builder.Build();
 
             return new AutofacServiceProvider(container);
-
-
         }
 
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, 
+        public void Configure(IApplicationBuilder app,
             IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
 
@@ -125,22 +118,16 @@ namespace WebApi
             {
                 app.UseDeveloperExceptionPage();
             }
-           
-            if (env.IsProduction())
-            {
-                app.UseMiddleware<CustomErrorMiddleware>();
 
-            }
+            app.UseMiddleware<CustomMiddleware>();
 
+            app.UseMiddleware<CustomErrorMiddleware>();
 
 
 
             app.UseStaticFiles();
-            // Enable middleware to serve generated Swagger as a JSON endpoint.
-            app.UseSwagger();
 
-            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), 
-            // specifying the Swagger JSON endpoint.
+            app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
@@ -157,10 +144,7 @@ namespace WebApi
 
             app.UseMvc();
 
-            app.Run(async (context) =>
-            {
-                context.Response.Redirect("swagger");
-            });
+
         }
     }
 }
