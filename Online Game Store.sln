@@ -10,12 +10,15 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogicLayer", "BusinessLogicLayer\BusinessLogicLayer.csproj", "{91FF6669-D37E-4009-8A2D-E0CD19711E0F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "WebApi\WebApi.csproj", "{7FE7C220-9D49-4B1A-848D-7DFB183FC9B8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{56571637-6E50-4864-8F41-C694684F7226} = {56571637-6E50-4864-8F41-C694684F7226}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogicLayer.Test", "BusinessLogicLayer.Test\BusinessLogicLayer.Test.csproj", "{5056D680-018E-4718-834B-74702D938BC2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi.Test", "WebApi.Test\WebApi.Test.csproj", "{648A986C-5104-4CF4-80B0-3FA074D33F59}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity", "Identity\Identity.csproj", "{56571637-6E50-4864-8F41-C694684F7226}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identity", "Identity\Identity.csproj", "{56571637-6E50-4864-8F41-C694684F7226}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
